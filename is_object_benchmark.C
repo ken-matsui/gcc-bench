@@ -2,16 +2,16 @@
 #include <type_traits>
 
 template <typename T>
-  struct is_object
-  : public std::negation<std::disjunction<
-        std::is_function<T>, std::is_reference<T>, std::is_void<T>>
-    >::type
-  { };
+struct is_object
+: public std::negation<std::disjunction<
+    std::is_function<T>, std::is_reference<T>, std::is_void<T>>
+>::type
+{ };
 
 #ifdef USE_BUILTIN
 template <typename T>
-  inline constexpr bool is_object_v =
-      !(__is_function(T) || __is_reference(T) || __is_void(T));
+inline constexpr bool is_object_v =
+    !(__is_function(T) || __is_reference(T) || __is_void(T));
 #else
 template <typename T>
 inline constexpr bool is_object_v = is_object<T>::value;
