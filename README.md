@@ -23,7 +23,7 @@ $ nproc --all
 
 ### Caches
 
-```
+```console
 $ lscpu | grep "cache"
 L1d cache: 192 KiB (4 instances)
 L1i cache: 128 KiB (4 instances)
@@ -33,7 +33,7 @@ L3 cache: 12 MiB (1 instance)
 
 ### Memory
 
-```
+```console
 $ free -m
                total        used        free      shared  buff/cache   available
 Mem:           15681        6642        4538         735        5559        9038
