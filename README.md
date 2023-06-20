@@ -57,5 +57,5 @@ $ make -j8 BOOT_CFLAGS='-g0 -O3 -flto'
 ## Benchmark
 
 ```console
-$ ./bench.sh is_object.cc
+$ ./bench.sh is_object.cc 6
 ```
