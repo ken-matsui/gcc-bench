@@ -33,10 +33,12 @@ check_cmd git
 check_cmd xg++
 
 # Make sure we have the right number of arguments
-if [ $# -ne 1 ]; then
-    echo 'Usage: ./bench.sh <benchmark-file>'
+if [ $# -ne 2 ]; then
+    echo 'Usage: ./bench.sh <benchmark-file> <#-of-commits>'
+    echo 'Example: ./bench.sh is_object.cc 6'
     exit 1
 fi
+NUM_COMMITS=$2
 
 # Make sure the benchmark file exists
 if [ ! -f "$1" ]; then
@@ -62,18 +64,18 @@ xg++ --version >> "$REPORT_FILE"
 echo '```\n' >> "$REPORT_FILE"
 
 pushd $(dirname $(where xg++))
-MASTER_COMMIT=$(git rev-parse origin/master)
-HEAD_COMMIT=$(git rev-parse HEAD)
+BASE_COMMIT=$(git rev-parse HEAD~"$NUM_COMMITS")
+COMMITS_MADE=$(git log -n "$NUM_COMMITS" --pretty=format:%H)
 popd
 
 echo '```console' >> "$REPORT_FILE"
-echo '$ git rev-parse origin/master' >> "$REPORT_FILE"
-echo "$MASTER_COMMIT" >> "$REPORT_FILE"
+echo "$ git rev-parse HEAD~"$NUM_COMMITS"  # base commit" >> "$REPORT_FILE"
+echo "$BASE_COMMIT" >> "$REPORT_FILE"
 echo '```\n' >> "$REPORT_FILE"
 
 echo '```console' >> "$REPORT_FILE"
-echo '$ git rev-parse HEAD' >> "$REPORT_FILE"
-echo "$HEAD_COMMIT" >> "$REPORT_FILE"
+echo "$ git log -n "$NUM_COMMITS" --pretty=format:%H  # changes from the base" >> "$REPORT_FILE"
+echo "$COMMITS_MADE" >> "$REPORT_FILE"
 echo '```\n' >> "$REPORT_FILE"
 
 
