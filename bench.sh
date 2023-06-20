@@ -29,6 +29,7 @@ check_cmd pushd
 check_cmd popd
 check_cmd dirname
 check_cmd where
+check_cmd date
 check_cmd git
 check_cmd xg++
 
