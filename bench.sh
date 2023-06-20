@@ -10,7 +10,7 @@ WARMUP_SIZE=3
 # Make sure we have commands to use
 check_cmd() {
     if ! command -v $1 &> /dev/null; then
-        echo "$1 not found"
+        echo "command `$1` not found"
         exit 1
     fi
 }
