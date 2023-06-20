@@ -39,3 +39,10 @@ $ free -m
 Mem:           15681        6642        4538         735        5559        9038
 Swap:           1955           0        1955
 ```
+
+## Tools
+
+* Linux perf
+* /usr/bin/time
+* -ftime-report
+* ministat
