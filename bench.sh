@@ -87,9 +87,6 @@ CPLUS_INCLUDE_PATH=/usr/include/c++/13:/usr/include/x86_64-linux-gnu/c++/13:/usr
 # Run time benchmark
 echo '### Time Benchmark' | tee -a "$REPORT_FILE"
 
-echo '\n```console' >> "$REPORT_FILE"
-echo "$ perf stat xg++ -c $FILE" >> "$REPORT_FILE"
-
 ## Run warmup without built-ins
 echo "Running warmup ($WARMUP_SIZE) without built-ins"
 for i in $(seq $WARMUP_SIZE); do
@@ -113,6 +110,8 @@ for i in $(seq $SAMPLE_SIZE); do
 done > "$TMP_DIR/time_after.txt"
 
 # Show statistics for time
+echo '\n```console' >> "$REPORT_FILE"
+echo "$ perf stat xg++ -c $FILE" >> "$REPORT_FILE"
 ministat -w 70 "$TMP_DIR/time_before.txt" "$TMP_DIR/time_after.txt" | tee -a "$REPORT_FILE"
 echo '```' >> "$REPORT_FILE"
 
@@ -122,9 +121,6 @@ echo '' | tee -a "$REPORT_FILE"
 
 # Run peak memory usage benchmark
 echo '### Peak Memory Usage Benchmark' | tee -a "$REPORT_FILE"
-
-echo '\n```console' >> "$REPORT_FILE"
-echo "$ /usr/bin/time -v xg++ -c $FILE" >> "$REPORT_FILE"
 
 ## Run warmup without built-ins
 echo "Running warmup ($WARMUP_SIZE) without built-ins"
@@ -149,6 +145,8 @@ for i in $(seq $SAMPLE_SIZE); do
 done > "$TMP_DIR/peak_mem_after.txt"
 
 # Show statistics for peak memory usage
+echo '\n```console' >> "$REPORT_FILE"
+echo "$ /usr/bin/time -v xg++ -c $FILE" >> "$REPORT_FILE"
 ministat -w 70 "$TMP_DIR/peak_mem_before.txt" "$TMP_DIR/peak_mem_after.txt" | tee -a "$REPORT_FILE"
 echo '```' >> "$REPORT_FILE"
 
@@ -158,9 +156,6 @@ echo '' | tee -a "$REPORT_FILE"
 
 # Run total memory usage benchmark
 echo '### Total Memory Usage Benchmark' | tee -a "$REPORT_FILE"
-
-echo '\n```console' >> "$REPORT_FILE"
-echo "$ xg++ -ftime-report -c $FILE" >> "$REPORT_FILE"
 
 ## Run warmup without built-ins
 echo "Running warmup ($WARMUP_SIZE) without built-ins"
@@ -185,6 +180,8 @@ for i in $(seq $SAMPLE_SIZE); do
 done > "$TMP_DIR/total_mem_after.txt"
 
 # Show statistics for total memory usage
+echo '\n```console' >> "$REPORT_FILE"
+echo "$ xg++ -ftime-report -c $FILE" >> "$REPORT_FILE"
 ministat -w 70 "$TMP_DIR/total_mem_before.txt" "$TMP_DIR/total_mem_after.txt" | tee -a "$REPORT_FILE"
 echo '```' >> "$REPORT_FILE"
 
