@@ -47,7 +47,14 @@ Swap:           1955           0        1955
 * -ftime-report
 * ministat
 
-## Benchmark Script
+## Build
+
+```console
+$ ../configure --enable-languages=c++ --disable-error --enable-checking=release --disable-bootstrap
+$ make -j8 BOOT_CFLAGS='-g0 -O3 -flto'
+```
+
+## Benchmark
 
 ```console
 $ ./bench.sh is_object_benchmark.cc
