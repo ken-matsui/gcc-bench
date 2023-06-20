@@ -24,7 +24,7 @@ bfc7d57f57404c1866125eb1cde02dceec93fac7
 fabddb6b34b1eaaadf71c278d4235863b91a58e0
 ```
 
-### Time Benchmark
+### Time
 
 ```console
 $ perf stat xg++ -c is_object.cc
@@ -48,7 +48,7 @@ Difference at 95.0% confidence
 	(Student's t, pooled s = 0.0687807)
 ```
 
-### Peak Memory Usage Benchmark
+### Peak Memory Usage
 
 ```console
 $ /usr/bin/time -v xg++ -c is_object.cc
@@ -76,7 +76,7 @@ Difference at 95.0% confidence
 	(Student's t, pooled s = 58.2142)
 ```
 
-### Total Memory Usage Benchmark
+### Total Memory Usage
 
 ```console
 $ xg++ -ftime-report -c is_object.cc

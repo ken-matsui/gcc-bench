@@ -87,7 +87,7 @@ CPLUS_INCLUDE_PATH=/usr/include/c++/13:/usr/include/x86_64-linux-gnu/c++/13:/usr
 
 
 # Run time benchmark
-echo '### Time Benchmark' | tee -a "$REPORT_FILE"
+echo '### Time' | tee -a "$REPORT_FILE"
 
 ## Run warmup without built-ins
 echo "Running warmup ($WARMUP_SIZE) without built-ins"
@@ -122,7 +122,7 @@ echo '' | tee -a "$REPORT_FILE"
 
 
 # Run peak memory usage benchmark
-echo '### Peak Memory Usage Benchmark' | tee -a "$REPORT_FILE"
+echo '### Peak Memory Usage' | tee -a "$REPORT_FILE"
 
 ## Run warmup without built-ins
 echo "Running warmup ($WARMUP_SIZE) without built-ins"
@@ -157,7 +157,7 @@ echo '' | tee -a "$REPORT_FILE"
 
 
 # Run total memory usage benchmark
-echo '### Total Memory Usage Benchmark' | tee -a "$REPORT_FILE"
+echo '### Total Memory Usage' | tee -a "$REPORT_FILE"
 
 ## Run warmup without built-ins
 echo "Running warmup ($WARMUP_SIZE) without built-ins"
