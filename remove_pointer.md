@@ -1,4 +1,4 @@
-## Mon Jun 19 09:11:05 PM PDT 2023
+## Mon Jun 19 10:54:24 PM PDT 2023
 
 ```console
 $ xg++ --version
@@ -10,42 +10,44 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ```
 
 ```console
-$ git rev-parse origin/master
+$ git rev-parse HEAD~2  # base commit
 73a0d3bf895b5c322676178a51ac0d68cf603953
 ```
 
 ```console
-$ git rev-parse HEAD
+$ git log -n 2 --pretty=format:%H  # changes from the base
 3359905613955122787dc631bceaf167fab4e4c2
+270dd10662a0f0e27d8952c6c4291123d0b349b6
 ```
 
-### Time Benchmark
+### Time
 
 ```console
 $ perf stat xg++ -c remove_pointer.cc
-x /tmp/tmp.RAhxXYlHQu/time_before.txt
-+ /tmp/tmp.RAhxXYlHQu/time_after.txt
+x /tmp/tmp.vynQ6BRCPO/time_before.txt
++ /tmp/tmp.vynQ6BRCPO/time_after.txt
 +----------------------------------------------------------------------+
-|  ++             +                              x                     |
-|+ ++       ++    ++                  x   x    xxxx     x    x        x|
-| |_______A_M____|                        |______M_A________|          |
+|+                                                        x           x|
+|++      ++     ++ +  ++                        x x    x  x x     x x x|
+|  |________A___M____|                              |_______A_______|  |
 +----------------------------------------------------------------------+
     N           Min           Max        Median           Avg        Stddev
-x  10     3.6200133     3.8247194     3.6889505     3.7033308   0.059972113
-+  10      3.384799      3.502432      3.456113     3.4392256   0.046457171
+x  10     3.6578385     3.7823199     3.7285758     3.7278216   0.045107315
++  10     3.3921297     3.5173889     3.4771778     3.4543354   0.049036166
 Difference at 95.0% confidence
-	-0.264105 +/- 0.0504018
-	-7.13156% +/- 1.36098%
-	(Student's t, pooled s = 0.053642)
+	-0.273486 +/- 0.0442669
+	-7.33635% +/- 1.18747%
+	(Student's t, pooled s = 0.0471127)
 ```
 
-### Peak Memory Usage Benchmark
+### Peak Memory Usage
 
 ```console
 $ /usr/bin/time -v xg++ -c remove_pointer.cc
-x /tmp/tmp.RAhxXYlHQu/peak_mem_before.txt
-+ /tmp/tmp.RAhxXYlHQu/peak_mem_after.txt
+x /tmp/tmp.vynQ6BRCPO/peak_mem_before.txt
++ /tmp/tmp.vynQ6BRCPO/peak_mem_after.txt
 +----------------------------------------------------------------------+
+|+                                                                     |
 |+                                                                    x|
 |+                                                                    x|
 |+                                                                    x|
@@ -54,24 +56,24 @@ x /tmp/tmp.RAhxXYlHQu/peak_mem_before.txt
 |+                                                                    x|
 |+                                                                    x|
 |+                                                                    x|
-|++                                                                   x|
+|+                                                                   xx|
 |A                                                                    A|
 +----------------------------------------------------------------------+
     N           Min           Max        Median           Avg        Stddev
-x  10       1098172       1098444       1098300       1098298     89.784928
-+  10       1050772       1051132       1050928     1050946.4      108.9946
+x  10       1098000       1098356       1098244     1098233.2     95.238647
++  10       1050804       1051052       1050928     1050922.8     74.524865
 Difference at 95.0% confidence
-	-47351.6 +/- 93.8212
-	-4.31136% +/- 0.00854242%
-	(Student's t, pooled s = 99.8528)
+	-47310.4 +/- 80.346
+	-4.30786% +/- 0.00731594%
+	(Student's t, pooled s = 85.5113)
 ```
 
-### Total Memory Usage Benchmark
+### Total Memory Usage
 
 ```console
 $ xg++ -ftime-report -c remove_pointer.cc
-x /tmp/tmp.RAhxXYlHQu/total_mem_before.txt
-+ /tmp/tmp.RAhxXYlHQu/total_mem_after.txt
+x /tmp/tmp.vynQ6BRCPO/total_mem_before.txt
++ /tmp/tmp.vynQ6BRCPO/total_mem_after.txt
 +----------------------------------------------------------------------+
 |+                                                                    x|
 |+                                                                    x|
