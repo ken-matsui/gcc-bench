@@ -22,7 +22,7 @@ $ git rev-parse HEAD
 ### Time Benchmark
 
 ```console
-$ perf stat xg++ -c remove_pointer_benchmark.cc
+$ perf stat xg++ -c remove_pointer.cc
 x /tmp/tmp.RAhxXYlHQu/time_before.txt
 + /tmp/tmp.RAhxXYlHQu/time_after.txt
 +----------------------------------------------------------------------+
@@ -42,7 +42,7 @@ Difference at 95.0% confidence
 ### Peak Memory Usage Benchmark
 
 ```console
-$ /usr/bin/time -v xg++ -c remove_pointer_benchmark.cc
+$ /usr/bin/time -v xg++ -c remove_pointer.cc
 x /tmp/tmp.RAhxXYlHQu/peak_mem_before.txt
 + /tmp/tmp.RAhxXYlHQu/peak_mem_after.txt
 +----------------------------------------------------------------------+
@@ -69,7 +69,7 @@ Difference at 95.0% confidence
 ### Total Memory Usage Benchmark
 
 ```console
-$ xg++ -ftime-report -c remove_pointer_benchmark.cc
+$ xg++ -ftime-report -c remove_pointer.cc
 x /tmp/tmp.RAhxXYlHQu/total_mem_before.txt
 + /tmp/tmp.RAhxXYlHQu/total_mem_after.txt
 +----------------------------------------------------------------------+
