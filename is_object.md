@@ -1,5 +1,7 @@
 ## Mon Jun 19 10:31:57 PM PDT 2023
 
+https://github.com/ken-matsui/gcc-benches/blob/bff3bde532cf1a4d6f0ffea0b1db2a2b431bd74f/is_object.cc
+
 ```console
 $ xg++ --version
 xg++ (GCC) 14.0.0 20230610 (experimental)

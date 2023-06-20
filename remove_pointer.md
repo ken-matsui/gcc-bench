@@ -1,5 +1,7 @@
 ## Mon Jun 19 10:54:24 PM PDT 2023
 
+https://github.com/ken-matsui/gcc-benches/blob/bff3bde532cf1a4d6f0ffea0b1db2a2b431bd74f/remove_pointer.cc
+
 ```console
 $ xg++ --version
 xg++ (GCC) 14.0.0 20230615 (experimental)
