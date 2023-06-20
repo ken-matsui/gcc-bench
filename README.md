@@ -46,3 +46,9 @@ Swap:           1955           0        1955
 * /usr/bin/time
 * -ftime-report
 * ministat
+
+## Benchmark Script
+
+```console
+$ ./bench.sh is_object_benchmark.cc
+```
