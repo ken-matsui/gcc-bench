@@ -64,7 +64,8 @@ echo '$ xg++ --version' >> "$REPORT_FILE"
 xg++ --version >> "$REPORT_FILE"
 echo '```\n' >> "$REPORT_FILE"
 
-pushd $(dirname $(where xg++)) # assuming xg++ is under the GCC directory (e.g. .../gcc/objdir/gcc/xg++)
+XGPP_DIR=$(dirname $(where xg++)) # i.e. .../gcc/objdir/gcc; assuming xg++ is under the GCC directory
+pushd "$XGPP_DIR"
 BASE_COMMIT=$(git rev-parse HEAD~"$NUM_COMMITS")
 COMMITS_MADE=$(git log -n "$NUM_COMMITS" --pretty=format:%H)
 popd
@@ -83,8 +84,15 @@ echo '```\n' >> "$REPORT_FILE"
 # Create a temporary directory for the benchmark
 TMP_DIR=$(mktemp -d)
 
-# Set include directories
-CPLUS_INCLUDE_PATH=/usr/include/c++/13:/usr/include/x86_64-linux-gnu/c++/13:/usr/include/linux
+GCC_BUILD_DIR="$XGPP_DIR/.."  # i.e. .../gcc/objdir
+GCC_DIR="$GCC_BUILD_DIR/.."  # i.e. .../gcc
+
+# Set include & link directories
+# https://gcc.gnu.org/onlinedocs/gcc/Environment-Variables.html
+GCC_EXEC_PREFIX="$XGPP_DIR"  # -B
+CPLUS_INCLUDE_PATH="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include"  # -I
+CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu"
+CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$GCC_DIR/gcc/ginclude"  # for stddef.h
 
 
 # Run time benchmark
