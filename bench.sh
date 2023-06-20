@@ -63,7 +63,7 @@ echo '$ xg++ --version' >> "$REPORT_FILE"
 xg++ --version >> "$REPORT_FILE"
 echo '```\n' >> "$REPORT_FILE"
 
-pushd $(dirname $(where xg++))
+pushd $(dirname $(where xg++)) # assuming xg++ is under the GCC directory (e.g. .../gcc/objdir/gcc/xg++)
 BASE_COMMIT=$(git rev-parse HEAD~"$NUM_COMMITS")
 COMMITS_MADE=$(git log -n "$NUM_COMMITS" --pretty=format:%H)
 popd
