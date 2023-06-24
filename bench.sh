@@ -66,19 +66,21 @@ INCLUDE_PATH3="$GCC_DIR/gcc/ginclude"  # for stddef.h
 
 # Test runs before writing to file
 echo "Test Run: perf stat xg++ -c $FILE"
-perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1
 echo "Test Run: perf stat xg++ -DUSE_BUILTIN -c $FILE"
-perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE >!error.log 2>&1
 
 echo "Test Run: /usr/bin/time -v xg++ -c $FILE"
-/usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+/usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1
 echo "Test Run: /usr/bin/time -v xg++ -DUSE_BUILTIN -c $FILE"
-/usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+/usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE >!error.log 2>&1
 
 echo "Test Run: xg++ -ftime-report -c $FILE"
-xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1
 echo "Test Run: xg++ -ftime-report -DUSE_BUILTIN -c $FILE"
-xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE >!error.log 2>&1
+
+echo '\n=== Running benchmark ==='
 
 
 # Create a benchmark report file if it doesn't exist
