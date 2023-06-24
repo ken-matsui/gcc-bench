@@ -1,4 +1,4 @@
-#include <stddef.h>
+#include <cstddef>
 #include <type_traits>
 
 template <typename T>
@@ -20,10 +20,14 @@ inline constexpr bool is_object_v = is_object<T>::value;
 template <std::size_t N, std::size_t Count = 256>
 struct Instantiator : Instantiator<N, Count - 1> {
     static_assert(is_object_v<Instantiator>);
+    static_assert(!is_object_v<Instantiator&>);
+    static_assert(!is_object_v<Instantiator(int)>);
 };
 template <std::size_t N>
 struct Instantiator<N, 0> {
     static_assert(is_object_v<Instantiator>);
+    static_assert(!is_object_v<Instantiator&>);
+    static_assert(!is_object_v<Instantiator(int)>);
 };
 
 template <std::size_t base>
