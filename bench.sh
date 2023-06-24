@@ -87,6 +87,7 @@ echo '\n=== Running benchmark ==='
 REPORT_FILE="$FILENAME.md"
 touch "$REPORT_FILE"
 echo "## $(date)" >> "$REPORT_FILE"
+echo '\n<PUT PERMALINK TO THE BENCHMARK FILE HERE>\n' >> "$REPORT_FILE"
 
 echo '\n```console' >> "$REPORT_FILE"
 echo '$ xg++ --version' >> "$REPORT_FILE"
