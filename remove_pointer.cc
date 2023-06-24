@@ -26,10 +26,16 @@ using remove_pointer_t = typename remove_pointer<T>::type;
 template <std::size_t N, std::size_t Count = 256>
 struct Instantiator : Instantiator<N, Count - 1> {
     static_assert(!std::is_pointer_v<remove_pointer_t<Instantiator>>);
+    static_assert(!std::is_pointer_v<remove_pointer_t<Instantiator*>>);
+    static_assert(!std::is_pointer_v<remove_pointer_t<const Instantiator>>);
+    static_assert(!std::is_pointer_v<remove_pointer_t<Instantiator* const>>);
 };
 template <std::size_t N>
 struct Instantiator<N, 0> {
     static_assert(!std::is_pointer_v<remove_pointer_t<Instantiator>>);
+    static_assert(!std::is_pointer_v<remove_pointer_t<Instantiator*>>);
+    static_assert(!std::is_pointer_v<remove_pointer_t<const Instantiator>>);
+    static_assert(!std::is_pointer_v<remove_pointer_t<Instantiator* const>>);
 };
 
 template <std::size_t base>
