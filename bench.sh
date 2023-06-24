@@ -31,6 +31,7 @@ check_cmd dirname
 check_cmd where
 check_cmd date
 check_cmd git
+check_cmd cat
 check_cmd xg++
 
 # Make sure we have the right number of arguments
@@ -54,6 +55,32 @@ fi
 FILE=$1
 FILENAME=$(basename "$FILE" .cc)
 
+XGPP_DIR=$(dirname $(where xg++)) # i.e. .../gcc/objdir/gcc; assuming xg++ is under the GCC directory
+GCC_BUILD_DIR="$XGPP_DIR/.."  # i.e. .../gcc/objdir
+GCC_DIR="$GCC_BUILD_DIR/.."  # i.e. .../gcc
+
+# Set include & link directories
+INCLUDE_PATH1="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include"
+INCLUDE_PATH2="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu"
+INCLUDE_PATH3="$GCC_DIR/gcc/ginclude"  # for stddef.h
+
+# Test runs before writing to file
+echo "Test Run: perf stat xg++ -c $FILE"
+perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+echo "Test Run: perf stat xg++ -DUSE_BUILTIN -c $FILE"
+perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+
+echo "Test Run: /usr/bin/time -v xg++ -c $FILE"
+/usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+echo "Test Run: /usr/bin/time -v xg++ -DUSE_BUILTIN -c $FILE"
+/usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+
+echo "Test Run: xg++ -ftime-report -c $FILE"
+xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+echo "Test Run: xg++ -ftime-report -DUSE_BUILTIN -c $FILE"
+xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE >!error.log 2>&1 || cat error.log && exit 1
+
+
 # Create a benchmark report file if it doesn't exist
 REPORT_FILE="$FILENAME.md"
 touch "$REPORT_FILE"
@@ -64,7 +91,6 @@ echo '$ xg++ --version' >> "$REPORT_FILE"
 xg++ --version >> "$REPORT_FILE"
 echo '```\n' >> "$REPORT_FILE"
 
-XGPP_DIR=$(dirname $(where xg++)) # i.e. .../gcc/objdir/gcc; assuming xg++ is under the GCC directory
 pushd "$XGPP_DIR"
 BASE_COMMIT=$(git rev-parse HEAD~"$NUM_COMMITS")
 COMMITS_MADE=$(git log -n "$NUM_COMMITS" --pretty=format:%H)
@@ -84,40 +110,29 @@ echo '```\n' >> "$REPORT_FILE"
 # Create a temporary directory for the benchmark
 TMP_DIR=$(mktemp -d)
 
-GCC_BUILD_DIR="$XGPP_DIR/.."  # i.e. .../gcc/objdir
-GCC_DIR="$GCC_BUILD_DIR/.."  # i.e. .../gcc
-
-# Set include & link directories
-# https://gcc.gnu.org/onlinedocs/gcc/Environment-Variables.html
-GCC_EXEC_PREFIX="$XGPP_DIR"  # -B
-CPLUS_INCLUDE_PATH="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include"  # -I
-CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu"
-CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$GCC_DIR/gcc/ginclude"  # for stddef.h
-
-
 # Run time benchmark
 echo '### Time' | tee -a "$REPORT_FILE"
 
 ## Run warmup without built-ins
 echo "Running warmup ($WARMUP_SIZE) without built-ins"
 for i in $(seq $WARMUP_SIZE); do
-    perf stat -r 1 xg++ -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > /dev/null
 ## Run sample without built-ins
 echo "Running samples ($SAMPLE_SIZE) without built-ins"
 for i in $(seq $SAMPLE_SIZE); do
-    perf stat -r 1 xg++ -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > "$TMP_DIR/time_before.txt"
 
 ## Run warmup with built-ins
 echo "Running warmup ($WARMUP_SIZE) with built-ins"
 for i in $(seq $WARMUP_SIZE); do
-    perf stat -r 1 xg++ -DUSE_BUILTIN -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > /dev/null
 ## Run sample with built-ins
 echo "Running samples ($SAMPLE_SIZE) with built-ins"
 for i in $(seq $SAMPLE_SIZE); do
-    perf stat -r 1 xg++ -DUSE_BUILTIN -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > "$TMP_DIR/time_after.txt"
 
 # Show statistics for time
@@ -136,23 +151,23 @@ echo '### Peak Memory Usage' | tee -a "$REPORT_FILE"
 ## Run warmup without built-ins
 echo "Running warmup ($WARMUP_SIZE) without built-ins"
 for i in $(seq $WARMUP_SIZE); do
-    /usr/bin/time -v xg++ -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > /dev/null
 ## Run sample without built-ins
 echo "Running samples ($SAMPLE_SIZE) without built-ins"
 for i in $(seq $SAMPLE_SIZE); do
-    /usr/bin/time -v xg++ -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > "$TMP_DIR/peak_mem_before.txt"
 
 ## Run warmup with built-ins
 echo "Running warmup ($WARMUP_SIZE) with built-ins"
 for i in $(seq $WARMUP_SIZE); do
-    /usr/bin/time -v xg++ -DUSE_BUILTIN -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > /dev/null
 ## Run sample with built-ins
 echo "Running samples ($SAMPLE_SIZE) with built-ins"
 for i in $(seq $SAMPLE_SIZE); do
-    /usr/bin/time -v xg++ -DUSE_BUILTIN -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > "$TMP_DIR/peak_mem_after.txt"
 
 # Show statistics for peak memory usage
@@ -171,23 +186,23 @@ echo '### Total Memory Usage' | tee -a "$REPORT_FILE"
 ## Run warmup without built-ins
 echo "Running warmup ($WARMUP_SIZE) without built-ins"
 for i in $(seq $WARMUP_SIZE); do
-    xg++ -ftime-report -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > /dev/null
 ## Run sample without built-ins
 echo "Running samples ($SAMPLE_SIZE) without built-ins"
 for i in $(seq $SAMPLE_SIZE); do
-    xg++ -ftime-report -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > "$TMP_DIR/total_mem_before.txt"
 
 ## Run warmup with built-ins
 echo "Running warmup ($WARMUP_SIZE) with built-ins"
 for i in $(seq $WARMUP_SIZE); do
-    xg++ -ftime-report -DUSE_BUILTIN -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > /dev/null
 ## Run sample with built-ins
 echo "Running samples ($SAMPLE_SIZE) with built-ins"
 for i in $(seq $SAMPLE_SIZE); do
-    xg++ -ftime-report -DUSE_BUILTIN -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DUSE_BUILTIN -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > "$TMP_DIR/total_mem_after.txt"
 
 # Show statistics for total memory usage
