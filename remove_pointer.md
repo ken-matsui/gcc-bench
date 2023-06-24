@@ -100,3 +100,107 @@ Difference at 95.0% confidence
 
 ---
 
+## Tue Jun 20 03:03:13 PM PDT 2023
+
+https://github.com/ken-matsui/gcc-benches/blob/e00a92d84d17979818fa5a6e71e52dfcb9e648a0/remove_pointer.cc
+
+```console
+$ xg++ --version
+xg++ (GCC) 14.0.0 20230615 (experimental)
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+```
+
+```console
+$ git rev-parse HEAD~2  # base commit
+73a0d3bf895b5c322676178a51ac0d68cf603953
+```
+
+```console
+$ git log -n 2 --pretty=format:%H  # changes from the base
+3359905613955122787dc631bceaf167fab4e4c2
+270dd10662a0f0e27d8952c6c4291123d0b349b6
+```
+
+### Time
+
+```console
+$ perf stat xg++ -c remove_pointer.cc
+x /tmp/tmp.WgyLICAj71/time_before.txt
++ /tmp/tmp.WgyLICAj71/time_after.txt
++----------------------------------------------------------------------+
+|    +                                                            x    |
+| +  +                                                            xx   |
+| + ++                                                            xx   |
+|++ ++                                                          x xx xx|
+| |_A|                                                           |_A|  |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     6.9392317     7.1111235     7.0048566     7.0118213   0.051724346
++  10     4.9765257     5.1118405     5.0836516     5.0542637   0.049035859
+Difference at 95.0% confidence
+	-1.95756 +/- 0.0473538
+	-27.918% +/- 0.675342%
+	(Student's t, pooled s = 0.050398)
+```
+
+### Peak Memory Usage
+
+```console
+$ /usr/bin/time -v xg++ -c remove_pointer.cc
+x /tmp/tmp.WgyLICAj71/peak_mem_before.txt
++ /tmp/tmp.WgyLICAj71/peak_mem_after.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10       1733468       1733836       1733668       1733660     113.60751
++  10       1402788       1403100       1403000     1402955.2     104.25269
+Difference at 95.0% confidence
+	-330705 +/- 102.445
+	-19.0755% +/- 0.00590915%
+	(Student's t, pooled s = 109.03)
+```
+
+### Total Memory Usage
+
+```console
+$ xg++ -ftime-report -c remove_pointer.cc
+x /tmp/tmp.WgyLICAj71/total_mem_before.txt
++ /tmp/tmp.WgyLICAj71/total_mem_after.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          2008          2008          2008          2008             0
++  10          1606          1606          1606          1606             0
+Difference at 95.0% confidence
+	-402 +/- 0
+	-20.0199% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+
