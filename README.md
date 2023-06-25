@@ -49,19 +49,19 @@ Swap:           1955           0        1955
 
 ## Build GCC
 
-```console
-$ ../configure --enable-languages=c++ --disable-error --enable-checking=release --disable-bootstrap
-$ make -j8 BOOT_CFLAGS='-g0 -O3 -flto'
+```bash
+../configure --enable-languages=c++ --disable-error --enable-checking=release --disable-bootstrap
+make -j8 BOOT_CFLAGS='-g0 -O3 -flto'
 ```
 
 ## Build
 
-```console
-$ ./build.sh remove_pointer.cc -- --verbose
+```bash
+./build.sh remove_pointer.cc -- --verbose
 ```
 
 ## Benchmark
 
-```console
-$ ./bench.sh is_object.cc 6
+```bash
+./bench.sh is_object.cc 6
 ```
