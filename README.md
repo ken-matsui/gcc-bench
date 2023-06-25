@@ -47,11 +47,17 @@ Swap:           1955           0        1955
 * -ftime-report
 * ministat
 
-## Build
+## Build GCC
 
 ```console
 $ ../configure --enable-languages=c++ --disable-error --enable-checking=release --disable-bootstrap
 $ make -j8 BOOT_CFLAGS='-g0 -O3 -flto'
+```
+
+## Build
+
+```console
+$ ./build.sh remove_pointer.cc -- --verbose
 ```
 
 ## Benchmark
