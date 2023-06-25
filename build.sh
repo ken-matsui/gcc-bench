@@ -15,13 +15,17 @@ check_cmd xg++
 check_cmd dirname
 check_cmd where
 
-# Make sure we have the right number of arguments
-# If -- is supplied, pass all arguments after it to xg++
-if [ $# -lt 1 ]; then
+usage() {
     echo 'Usage: ./build.sh <build-file> [-- <xg++-args>]'
     echo 'Example: ./build.sh is_object.cc'
     echo 'Example: ./build.sh is_object.cc -- -O3'
     exit 1
+}
+
+# Make sure we have the right number of arguments
+# If -- is supplied, pass all arguments after it to xg++
+if [ $# -lt 1 ]; then
+    usage
 fi
 
 # Make sure the benchmark file exists
@@ -43,9 +47,7 @@ if [ $# -gt 1 ]; then
         shift
         XGPP_ARGS=$@
     else
-        echo "Usage: ./build.sh <build-file> [-- <xg++-args>]"
-        echo "Example: ./build.sh is_object.cc -- -O3"
-        exit 1
+        usage
     fi
 else
     XGPP_ARGS=""
