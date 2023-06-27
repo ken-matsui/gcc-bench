@@ -51,7 +51,7 @@ Swap:           1955           0        1955
 
 ```bash
 ../configure --enable-languages=c++ --disable-error --enable-checking=release --disable-bootstrap
-make -j8 BOOT_CFLAGS='-g0 -O3 -flto'
+make -j8
 ```
 
 ## Build
