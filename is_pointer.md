@@ -105,3 +105,104 @@ Difference at 95.0% confidence
 
 ---
 
+## Wed Jul 12 05:56:54 PM PDT 2023
+
+https://github.com/ken-matsui/gcc-benches/blob/cf9b29ba2c9f73259056f4ddd84694b12c1e5eac/is_pointer.cc
+
+
+```console
+$ xg++ --version
+xg++ (GCC) 14.0.0 20230710 (experimental)
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+```
+
+```console
+$ git rev-parse HEAD~2  # base commit
+361a6fc4bc5d3073e8e19fba0af51380720e677a
+```
+
+```console
+$ git log -n 2 --pretty=format:%H  # changes from the base
+9699ad059847698ebd42bfd37aa3c09b4ed17e69
+94f7a4e2079bdf0d14f994edd531017d4621e834
+```
+
+### Time
+
+```console
+$ perf stat xg++ -c is_pointer.cc
+x /tmp/tmp.oc4oQEkEqd/time_before.txt
++ /tmp/tmp.oc4oQEkEqd/time_after.txt
++----------------------------------------------------------------------+
+|+                                                                     |
+|++         +  +  +++ +xxx*        x x   xx   x                       x|
+|   |_________A___M____|_____________A_____________|                   |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     3.5862862     3.7885596     3.6448261      3.645138   0.061975904
++  10     3.4886965     3.5967585     3.5633557     3.5432609   0.040157785
+Difference at 95.0% confidence
+	-0.101877 +/- 0.0490648
+	-2.79488% +/- 1.34603%
+	(Student's t, pooled s = 0.0522191)
+```
+
+### Peak Memory Usage
+
+```console
+$ /usr/bin/time -v xg++ -c is_pointer.cc
+x /tmp/tmp.oc4oQEkEqd/peak_mem_before.txt
++ /tmp/tmp.oc4oQEkEqd/peak_mem_after.txt
++----------------------------------------------------------------------+
+|+                                                                     |
+|+                                                                     |
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                   xx|
+|+                                                                   xx|
+|++                                                                  xx|
+|++                                                                  xx|
+|A                                                                   AM|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10       1019752       1020136       1020000       1019954     120.77159
++  10        995444        995676        995528      995538.4     75.594239
+Difference at 95.0% confidence
+	-24415.6 +/- 94.6623
+	-2.39379% +/- 0.00928103%
+	(Student's t, pooled s = 100.748)
+```
+
+### Total Memory Usage
+
+```console
+$ xg++ -ftime-report -c is_pointer.cc
+x /tmp/tmp.oc4oQEkEqd/total_mem_before.txt
++ /tmp/tmp.oc4oQEkEqd/total_mem_after.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1178          1178          1178          1178             0
++  10          1138          1138          1138          1138             0
+Difference at 95.0% confidence
+	-40 +/- 0
+	-3.39559% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+
