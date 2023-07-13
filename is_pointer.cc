@@ -1,24 +1,19 @@
 #include <type_traits>
 
-template<typename>
-struct is_pointer_helper
-: public std::false_type { };
-
-template<typename _Tp>
-struct is_pointer_helper<_Tp*>
-: public std::true_type { };
-
-template<typename _Tp>
-struct is_pointer
-: public is_pointer_helper<std::remove_cv_t<_Tp>>::type
-{ };
-
 #ifdef USE_BUILTIN
 template <typename T>
-inline constexpr bool is_pointer_v = __is_pointer(T);
+  inline constexpr bool is_pointer_v = __is_pointer(T);
 #else
-template <typename T>
-inline constexpr bool is_pointer_v = is_pointer<T>::value;
+template <typename _Tp>
+  inline constexpr bool is_pointer_v = false;
+template <typename _Tp>
+  inline constexpr bool is_pointer_v<_Tp*> = true;
+template <typename _Tp>
+  inline constexpr bool is_pointer_v<_Tp* const> = true;
+template <typename _Tp>
+  inline constexpr bool is_pointer_v<_Tp* volatile> = true;
+template <typename _Tp>
+  inline constexpr bool is_pointer_v<_Tp* const volatile> = true;
 #endif
 
 template <std::size_t N, std::size_t Count = 256>
