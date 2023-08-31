@@ -64,6 +64,9 @@ INCLUDE_PATH1="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include"
 INCLUDE_PATH2="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu"
 INCLUDE_PATH3="$GCC_DIR/gcc/ginclude"  # for stddef.h
 
+echo 'NOTE: Make sure to run `sudo sysctl -w kernel.perf_event_paranoid=1`'
+echo 'before running this script. It should be okay to run once per computer boot.\n'
+
 # Test runs before writing to file
 echo "Test Run: perf stat xg++ -c $FILE"
 perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1
