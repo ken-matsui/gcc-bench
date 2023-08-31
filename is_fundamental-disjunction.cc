@@ -11,9 +11,9 @@ struct is_fundamental
 template<typename _Tp>
 struct is_fundamental
 : public std::bool_constant<__is_arithmetic(_Tp)
-                            || std::disjunction<std::is_void<_Tp>,
-                                                std::is_null_pointer<_Tp>
-                                                >::value>
+                            || std::__or_<std::is_void<_Tp>,
+                                          std::is_null_pointer<_Tp>
+                                          >::value>
 { };
 #endif
 
