@@ -16,32 +16,41 @@ check_cmd dirname
 check_cmd where
 
 usage() {
-    echo 'Usage: ./build.sh <build-file> [-- <xg++-args>]'
-    echo 'Example: ./build.sh is_object.cc'
-    echo 'Example: ./build.sh is_object.cc -- -O3'
+    echo 'Usage: ./build.sh A|B <build-file> [-- <xg++-args>]'
+    echo 'Example: ./build.sh A is_object.cc'
+    echo 'Example: ./build.sh B is_object.cc -- -O3'
     exit 1
 }
 
 # Make sure we have the right number of arguments
 # If -- is supplied, pass all arguments after it to xg++
-if [ $# -lt 1 ]; then
+if [ $# -lt 2 ]; then
     usage
 fi
 
+# Make sure the first argument is either A or B
+if [ "$1" != "A" ] && [ "$1" != "B" ]; then
+    usage
+fi
+# Set BUILD_EITHER to GSOC23_BENCH_A if A, GSOC23_BENCH_B if B.
+# Use upper case for the macro name.
+BUILD_EITHER="GSOC23_BENCH_$1"
+
 # Make sure the benchmark file exists
-if [ ! -f "$1" ]; then
-    echo "Build file $1 does not exist"
+if [ ! -f "$2" ]; then
+    echo "Build file $2 does not exist"
     exit 1
 fi
 # Make sure the benchmark file is a C++ file (.cc)
-if [ "${1: -3}" != ".cc" ]; then
-    echo "Build file $1 is not a C++ file"
+if [ "${2: -3}" != ".cc" ]; then
+    echo "Build file $2 is not a C++ file"
     exit 1
 fi
-FILE=$1
+FILE=$2
 
 # Retrieve -- args
-if [ $# -gt 1 ]; then
+if [ $# -gt 2 ]; then
+    shift
     shift
     if [ "$1" = "--" ]; then
         shift
@@ -62,4 +71,4 @@ INCLUDE_PATH1="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include"
 INCLUDE_PATH2="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu"
 INCLUDE_PATH3="$GCC_DIR/gcc/ginclude"  # for stddef.h
 
-xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" $XGPP_ARGS -c $FILE
+xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D"$BUILD_EITHER" $XGPP_ARGS -c $FILE

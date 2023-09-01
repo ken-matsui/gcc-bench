@@ -60,8 +60,16 @@ make -j8
 
 ## Build
 
+### Build A
+
 ```bash
-./build.sh remove_pointer.cc -- --verbose
+./build.sh A remove_pointer.cc -- --verbose
+```
+
+### Build B
+
+```bash
+./build.sh B remove_pointer.cc -- --verbose
 ```
 
 ## Benchmark
