@@ -34,7 +34,7 @@ check_cmd git
 check_cmd cat
 check_cmd xg++
 
-# Make sure we have the right number for arguments
+# Make sure we have the right number of arguments
 if [ $# -ne 2 ]; then
     echo 'Usage: ./bench.sh <benchmark-file> <#-of-commits>'
     echo 'Example: ./bench.sh is_object.cc 6'
