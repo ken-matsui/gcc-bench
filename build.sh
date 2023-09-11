@@ -71,4 +71,8 @@ INCLUDE_PATH1="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include"
 INCLUDE_PATH2="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu"
 INCLUDE_PATH3="$GCC_DIR/gcc/ginclude"  # for stddef.h
 
-xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D"$BUILD_EITHER" $XGPP_ARGS -c $FILE
+# Set C++ version (C++23 by default)
+CXX_VERSION="c++2b"
+
+echo "xg++ -std=$CXX_VERSION -I$INCLUDE_PATH1 -I$INCLUDE_PATH2 -I$INCLUDE_PATH3 -D$BUILD_EITHER $XGPP_ARGS -c $FILE"
+xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D"$BUILD_EITHER" $XGPP_ARGS -c $FILE
