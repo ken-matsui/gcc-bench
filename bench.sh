@@ -64,24 +64,27 @@ INCLUDE_PATH1="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include"
 INCLUDE_PATH2="$GCC_BUILD_DIR/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu"
 INCLUDE_PATH3="$GCC_DIR/gcc/ginclude"  # for stddef.h
 
+# Set C++ version (C++23 by default)
+CXX_VERSION="c++2b"
+
 echo 'NOTE: Make sure to run `sudo sysctl -w kernel.perf_event_paranoid=1` before'
 echo 'running this script. It should be okay to run once per computer boot.\n'
 
 # Test runs before writing to file
 echo "Test Run: perf stat xg++ -DGSOC23_BENCH_A -c $FILE"
-perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE >!error.log 2>&1
+perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE >!error.log 2>&1
 echo "Test Run: perf stat xg++ -DGSOC23_BENCH_B -c $FILE"
-perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE >!error.log 2>&1
+perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE >!error.log 2>&1
 
 echo "Test Run: /usr/bin/time -v xg++ -DGSOC23_BENCH_A -c $FILE"
-/usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE >!error.log 2>&1
+/usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE >!error.log 2>&1
 echo "Test Run: /usr/bin/time -v xg++ -DGSOC23_BENCH_B -c $FILE"
-/usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE >!error.log 2>&1
+/usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE >!error.log 2>&1
 
 echo "Test Run: xg++ -ftime-report -DGSOC23_BENCH_A -c $FILE"
-xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE >!error.log 2>&1
+xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE >!error.log 2>&1
 echo "Test Run: xg++ -ftime-report -DGSOC23_BENCH_B -c $FILE"
-xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE >!error.log 2>&1
+xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE >!error.log 2>&1
 
 echo '\n=== Running benchmark ==='
 
@@ -122,28 +125,28 @@ echo '### Time' | tee -a "$REPORT_FILE"
 ## Run warmup for A
 echo "A: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > /dev/null
 ## Run samples for A
 echo "A: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > "$TMP_DIR/time_A.txt"
 
 ## Run warmup for B
 echo "B: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > /dev/null
 ## Run samples for B
 echo "B: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    perf stat -r 1 xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > "$TMP_DIR/time_B.txt"
 
 # Show statistics for time
 echo '\n```console' >> "$REPORT_FILE"
-echo "$ perf stat xg++ -c $FILE" >> "$REPORT_FILE"
+echo "$ perf stat xg++ -std=$CXX_VERSION -c $FILE" >> "$REPORT_FILE"
 ministat -w 70 "$TMP_DIR/time_A.txt" "$TMP_DIR/time_B.txt" | tee -a "$REPORT_FILE"
 echo '```' >> "$REPORT_FILE"
 
@@ -157,28 +160,28 @@ echo '### Peak Memory Usage' | tee -a "$REPORT_FILE"
 ## Run warmup for A
 echo "A: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    /usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > /dev/null
 ## Run samples for A
 echo "A: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    /usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > "$TMP_DIR/peak_mem_A.txt"
 
 ## Run warmup for B
 echo "B: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    /usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > /dev/null
 ## Run samples for B
 echo "B: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    /usr/bin/time -v xg++ -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > "$TMP_DIR/peak_mem_B.txt"
 
 # Show statistics for peak memory usage
 echo '\n```console' >> "$REPORT_FILE"
-echo "$ /usr/bin/time -v xg++ -c $FILE" >> "$REPORT_FILE"
+echo "$ /usr/bin/time -v xg++ -std=$CXX_VERSION -c $FILE" >> "$REPORT_FILE"
 ministat -w 70 "$TMP_DIR/peak_mem_A.txt" "$TMP_DIR/peak_mem_B.txt" | tee -a "$REPORT_FILE"
 echo '```' >> "$REPORT_FILE"
 
@@ -192,28 +195,28 @@ echo '### Total Memory Usage' | tee -a "$REPORT_FILE"
 ## Run warmup for A
 echo "A: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > /dev/null
 ## Run samples for A
 echo "A: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > "$TMP_DIR/total_mem_A.txt"
 
 ## Run warmup for B
 echo "B: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > /dev/null
 ## Run samples for B
 echo "B: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    xg++ -ftime-report -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > "$TMP_DIR/total_mem_B.txt"
 
 # Show statistics for total memory usage
 echo '\n```console' >> "$REPORT_FILE"
-echo "$ xg++ -ftime-report -c $FILE" >> "$REPORT_FILE"
+echo "$ xg++ -ftime-report -std=$CXX_VERSION -c $FILE" >> "$REPORT_FILE"
 ministat -w 70 "$TMP_DIR/total_mem_A.txt" "$TMP_DIR/total_mem_B.txt" | tee -a "$REPORT_FILE"
 echo '```' >> "$REPORT_FILE"
 
