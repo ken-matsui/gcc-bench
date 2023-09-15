@@ -22,7 +22,7 @@ Same as [README.md](../../README.md).
 
 ## Benchmarks
 
-Used [scripts/bench-gcc-build.sh](../../scripts/bench-gcc-build.sh) on both commits. This script builds GCC and measures the performance. The results are stored this directory.
+Used [scripts/bench-gcc-build.sh](https://github.com/ken-matsui/gsoc23/blob/c9437f468d0ad5bc7387b43c623d89ad4fd5e04b/scripts/bench-gcc-build.sh) on both commits. This script builds GCC and measures the performance. The results are stored this directory.
 
 ## Statistics
 
