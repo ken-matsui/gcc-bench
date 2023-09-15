@@ -63,17 +63,17 @@ make -j8
 ### Build A
 
 ```bash
-./build.sh A remove_pointer.cc -- --verbose
+./scripts/build.sh A remove_pointer.cc -- --verbose
 ```
 
 ### Build B
 
 ```bash
-./build.sh B remove_pointer.cc -- --verbose
+./scripts/build.sh B remove_pointer.cc -- --verbose
 ```
 
 ## Benchmark
 
 ```bash
-./bench.sh is_object.cc 6
+./scripts/bench.sh is_object.cc 6
 ```
