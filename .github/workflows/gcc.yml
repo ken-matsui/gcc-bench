@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1440 # 24 hours
     steps:
-      - name: Clone GCC repo for GSoC 23
+      - name: Clone GSoC 23 GCC repo
         run: git clone --depth 1 https://github.com/ken-matsui/gcc-gsoc23.git
 
       - name: Install GCC dependencies
@@ -20,7 +20,7 @@ jobs:
           mkdir build
           cd build
           mkdir ${{ runner.temp }}/gcc
-          ../configure --prefix=${{ runner.temp }}/gcc --enable-languages=c++ --disable-error --enable-checking=release --disable-bootstrap
+          ../configure --prefix=${{ runner.temp }}/gcc --enable-languages=c++ --disable-error --disable-bootstrap --disable-multilib --enable-checking=release
           make -j$(nproc)
           sudo make install
 
