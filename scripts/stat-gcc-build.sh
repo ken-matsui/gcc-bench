@@ -25,9 +25,13 @@ fi
 # Show statistics for time benchmark
 echo "Time benchmark"
 echo "=============="
+echo ''
 ministat -w 70 "$DIR_BEFORE/time.txt" "$DIR_AFTER/time.txt"
+
+echo ''
 
 # Show statistics for peak memory benchmark
 echo "Peak memory benchmark"
 echo "====================="
+echo ''
 ministat -w 70 "$DIR_BEFORE/peak_memory.txt" "$DIR_AFTER/peak_memory.txt"
