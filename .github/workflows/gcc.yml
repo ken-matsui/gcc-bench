@@ -1,0 +1,34 @@
+name: GCC
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1440 # 24 hours
+    steps:
+      - name: Clone GCC repo for GSoC 23
+        run: git clone --depth 1 https://github.com/ken-matsui/gcc-gsoc23.git
+
+      - name: Install GCC dependencies
+        run: sudo apt-get install -y build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo
+
+      - name: Build GCC
+        run: |
+          cd gcc-gsoc23
+          ./contrib/download_prerequisites
+          mkdir build
+          cd build
+          mkdir ${{ runner.temp }}/gcc
+          ../configure --prefix=${{ runner.temp }}/gcc --enable-languages=c++ --disable-error --enable-checking=release --disable-bootstrap
+          make -j$(nproc)
+          sudo make install
+
+      - name: See installed artifacts
+        run: ls -aR ${{ runner.temp }}/gcc/
+
+      - name: Upload GCC artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: gcc
+          path: ${{ runner.temp }}/gcc/
