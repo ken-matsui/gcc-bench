@@ -22,7 +22,7 @@ Same as [README.md](../../README.md).
 
 ## Benchmarks
 
-Used [scripts/bench-gcc-build.sh](../../scripts/bench-gcc-build.sh) on both branches. The results are stored this directory.
+Used [scripts/bench-gcc-build.sh](../../scripts/bench-gcc-build.sh) on both commits. The results are stored this directory.
 
 ## Statistics
 
