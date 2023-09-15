@@ -2,11 +2,11 @@
 
 This benchmark measures performance regression after [me/16-bit-enum-rid](https://github.com/ken-matsui/gcc-gsoc23/tree/me/16-bit-enum-rid).
 
-## 8d8bc560b6ab7f3153db23ffb37157528e5b2c9a
+## [8d8bc560b6ab7f3153db23ffb37157528e5b2c9a](https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=8d8bc560b6ab7f3153db23ffb37157528e5b2c9a)
 
 The master branch commit from which [me/16-bit-enum-rid](https://github.com/ken-matsui/gcc-gsoc23/tree/me/16-bit-enum-rid) is derived.
 
-## 238947215e593f8a44f5fd68a49e1fcef235c6f6
+## [238947215e593f8a44f5fd68a49e1fcef235c6f6](https://github.com/ken-matsui/gcc-gsoc23/commit/238947215e593f8a44f5fd68a49e1fcef235c6f6)
 
 HEAD of [me/16-bit-enum-rid](https://github.com/ken-matsui/gcc-gsoc23/tree/me/16-bit-enum-rid).
 
