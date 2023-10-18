@@ -77,3 +77,9 @@ make -j8
 ```bash
 ./scripts/bench.sh is_object.cc 6
 ```
+
+## gen-charts.py
+
+```bash
+python3 ./scripts/gen-charts.py
+```
