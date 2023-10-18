@@ -49,13 +49,10 @@ def plot_bar_chart(hash_map, attribute_before, attribute_after, title, output_fi
     bar1 = ax.bar(index, before_values, bar_width, label='Before', alpha=0.8)
     bar2 = ax.bar([i+bar_width for i in index], after_values, bar_width, label='After', alpha=0.8)
 
-    # ax.set_xlabel("x label", labelpad=100)
-    # ax.tick_params(axis='x', which='major', pad=15)
     ax.set_title(title)
     ax.set_xticks([i + bar_width / 2 for i in index])
     ax.set_xticklabels(keys, rotation=45, ha='right')
     ax.tick_params(axis='x', which='major', labelsize=8)
-    # ax.xaxis.labelpad = 20
     ax.legend()
 
     plt.tight_layout()
