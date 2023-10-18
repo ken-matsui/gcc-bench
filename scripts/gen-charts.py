@@ -40,7 +40,7 @@ def plot_bar_chart(hash_map, attribute_before, attribute_after, title, output_fi
     before_values = [getattr(hash_map[key], attribute_before) for key in keys]
     after_values = [getattr(hash_map[key], attribute_after) for key in keys]
 
-    bar_width = 0.5
+    bar_width = 0.75
     spacing = 2
     index = range(0, int(spacing * len(keys)), int(spacing))
 
@@ -51,7 +51,7 @@ def plot_bar_chart(hash_map, attribute_before, attribute_after, title, output_fi
 
     ax.set_title(title)
     ax.set_xticks([i + bar_width / 2 for i in index])
-    ax.set_xticklabels(keys, rotation=45, ha='right')
+    ax.set_xticklabels(keys, rotation=90, ha='right')
     ax.tick_params(axis='x', which='major', labelsize=8)
     ax.legend()
 
