@@ -60,15 +60,15 @@ bench_time_no_builtin_%: %.cc
 	@echo 'W/o built-in: Running samples ($(SAMPLE_SIZE))'
 	@for i in `seq $(SAMPLE_SIZE)`; do \
 		$(MAKE) run_time_no_builtin_$* 2>&1 | grep 'seconds time elapsed' | awk '{print $$1}'; \
-	done > ./reports/$*/time_no_builtin.txt
+	done > ./reports/built-ins/$*/time_no_builtin.txt
 bench_time_builtin_%: %.cc
 	@echo 'With built-in: Running samples ($(SAMPLE_SIZE))'
 	@for i in `seq $(SAMPLE_SIZE)`; do \
 		$(MAKE) run_time_builtin_$* 2>&1 | grep 'seconds time elapsed' | awk '{print $$1}'; \
-	done > ./reports/$*/time_builtin.txt
+	done > ./reports/built-ins/$*/time_builtin.txt
 
 bench_time_%: warmup_time_no_builtin_% bench_time_no_builtin_% warmup_time_builtin_% bench_time_builtin_%
-	ministat -w 70 ./reports/$*/time_no_builtin.txt ./reports/$*/time_builtin.txt
+	ministat -w 70 ./reports/built-ins/$*/time_no_builtin.txt ./reports/$*/time_builtin.txt
 
 
 run_peak_mem_no_builtin_%: %.cc
@@ -91,15 +91,15 @@ bench_peak_mem_no_builtin_%: %.cc
 	@echo 'With built-in: Running warmup ($(WARMUP_SIZE))'
 	@for i in `seq $(SAMPLE_SIZE)`; do \
 		$(MAKE) run_peak_mem_no_builtin_$* 2>&1 | grep 'Maximum resident set size' | awk '{print $$6}'; \
-	done > ./reports/$*/peak_mem_no_builtin.txt
+	done > ./reports/built-ins/$*/peak_mem_no_builtin.txt
 bench_peak_mem_builtin_%: %.cc
 	@echo 'With built-in: Running samples ($(SAMPLE_SIZE))'
 	@for i in `seq $(SAMPLE_SIZE)`; do \
 		$(MAKE) run_peak_mem_builtin_$* 2>&1 | grep 'Maximum resident set size' | awk '{print $$6}'; \
-	done > ./reports/$*/peak_mem_builtin.txt
+	done > ./reports/built-ins/$*/peak_mem_builtin.txt
 
 bench_peak_mem_%: warmup_peak_mem_no_builtin_% bench_peak_mem_no_builtin_% warmup_peak_mem_builtin_% bench_peak_mem_builtin_%
-	ministat -w 70 ./reports/$*/peak_mem_no_builtin.txt ./reports/$*/peak_mem_builtin.txt
+	ministat -w 70 ./reports/built-ins/$*/peak_mem_no_builtin.txt ./reports/$*/peak_mem_builtin.txt
 
 
 run_total_mem_no_builtin_%: %.cc
@@ -122,15 +122,15 @@ bench_total_mem_no_builtin_%: %.cc
 	@echo 'With built-in: Running warmup ($(WARMUP_SIZE))'
 	@for i in `seq $(SAMPLE_SIZE)`; do \
 		$(MAKE) run_total_mem_no_builtin_$* 2>&1 | grep TOTAL | awk '{print $$6}' | sed 's/M$$//'; \
-	done > ./reports/$*/total_mem_no_builtin.txt
+	done > ./reports/built-ins/$*/total_mem_no_builtin.txt
 bench_total_mem_builtin_%: %.cc
 	@echo 'With built-in: Running samples ($(SAMPLE_SIZE))'
 	@for i in `seq $(SAMPLE_SIZE)`; do \
 		$(MAKE) run_total_mem_builtin_$* 2>&1 | grep TOTAL | awk '{print $$6}' | sed 's/M$$//'; \
-	done > ./reports/$*/total_mem_builtin.txt
+	done > ./reports/built-ins/$*/total_mem_builtin.txt
 
 bench_total_mem_%: warmup_total_mem_no_builtin_% bench_total_mem_no_builtin_% warmup_total_mem_builtin_% bench_total_mem_builtin_%
-	ministat -w 70 ./reports/$*/total_mem_no_builtin.txt ./reports/$*/total_mem_builtin.txt
+	ministat -w 70 ./reports/built-ins/$*/total_mem_no_builtin.txt ./reports/$*/total_mem_builtin.txt
 
 
 bench_%: %.cc
@@ -150,17 +150,17 @@ gen_report_%:
 
 	echo '### Time\n' >> ./$*.md
 	echo '```console' >> ./$*.md
-	ministat -w 70 ./reports/$*/time_no_builtin.txt ./reports/$*/time_builtin.txt >> ./$*.md
+	ministat -w 70 ./reports/built-ins/$*/time_no_builtin.txt ./reports/$*/time_builtin.txt >> ./$*.md
 	echo '```\n' >> ./$*.md
 
 	echo '### Peak Memory Usage\n' >> ./$*.md
 	echo '```console' >> ./$*.md
-	ministat -w 70 ./reports/$*/peak_mem_no_builtin.txt ./reports/$*/peak_mem_builtin.txt >> ./$*.md
+	ministat -w 70 ./reports/built-ins/$*/peak_mem_no_builtin.txt ./reports/$*/peak_mem_builtin.txt >> ./$*.md
 	echo '```\n' >> ./$*.md
 
 	echo '### Total Memory Usage\n' >> ./$*.md
 	echo '```console' >> ./$*.md
-	ministat -w 70 ./reports/$*/total_mem_no_builtin.txt ./reports/$*/total_mem_builtin.txt >> ./$*.md
+	ministat -w 70 ./reports/built-ins/$*/total_mem_no_builtin.txt ./reports/$*/total_mem_builtin.txt >> ./$*.md
 	echo '```\n' >> ./$*.md
 
 	echo '---\n' >> ./$*.md
