@@ -46,8 +46,8 @@ def plot_bar_chart(hash_map, attribute_before, attribute_after, title, output_fi
 
     fig, ax = plt.subplots()
 
-    bar1 = ax.bar(index, before_values, bar_width, label='Before', alpha=0.8)
-    bar2 = ax.bar([i+bar_width for i in index], after_values, bar_width, label='After', alpha=0.8)
+    bar1 = ax.bar(index, before_values, bar_width, label='W/o built-in', alpha=0.8)
+    bar2 = ax.bar([i+bar_width for i in index], after_values, bar_width, label='With built-in', alpha=0.8)
 
     ax.set_title(title)
     ax.set_xticks([i + bar_width / 2 for i in index])

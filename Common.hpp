@@ -1,12 +1,5 @@
 #pragma once
 
-#if !defined(GSOC23_BENCH_A) && !defined(GSOC23_BENCH_B)
-#error "Either GSOC23_BENCH_A or GSOC23_BENCH_B must be defined"
-#endif
-#if defined(GSOC23_BENCH_A) && defined(GSOC23_BENCH_B)
-#error "Both GSOC23_BENCH_A and GSOC23_BENCH_B cannot be defined"
-#endif
-
 #include <cstddef>
 
 namespace gsoc23

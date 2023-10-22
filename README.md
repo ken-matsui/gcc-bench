@@ -60,22 +60,27 @@ make -j8
 
 ## Build
 
-### Build A
+### Build with built-in
 
 ```bash
-./scripts/build.sh A remove_pointer.cc -- --verbose
+./scripts/build.sh remove_pointer.cc -- --verbose
 ```
 
-### Build B
+### Build without built-in
 
 ```bash
-./scripts/build.sh B remove_pointer.cc -- --verbose
+./scripts/build.sh remove_pointer.cc --no-builtin -- --verbose
 ```
 
 ## Benchmark
 
 ```bash
-./scripts/bench.sh is_object.cc 6
+./scripts/bench.sh is_object.cc
+```
+
+```bash
+make bench_all
+make bench_is_array_v
 ```
 
 ## gen-charts.py

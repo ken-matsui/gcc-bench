@@ -35,12 +35,11 @@ check_cmd cat
 check_cmd xg++
 
 # Make sure we have the right number of arguments
-if [ $# -ne 2 ]; then
-    echo 'Usage: ./bench.sh <benchmark-file> <#-of-commits>'
-    echo 'Example: ./bench.sh is_object.cc 6'
+if [ $# -ne 1 ]; then
+    echo 'Usage: ./bench.sh <benchmark-file>'
+    echo 'Example: ./bench.sh is_object.cc'
     exit 1
 fi
-NUM_COMMITS=$2
 
 # Make sure the benchmark file exists
 if [ ! -f "$1" ]; then
@@ -71,20 +70,20 @@ echo 'NOTE: Make sure to run `sudo sysctl -w kernel.perf_event_paranoid=1` befor
 echo 'running this script. It should be okay to run once per computer boot.\n'
 
 # Test runs before writing to file
-echo "Test Run: perf stat xg++ -DGSOC23_BENCH_A -c $FILE"
-perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE >!error.log 2>&1
-echo "Test Run: perf stat xg++ -DGSOC23_BENCH_B -c $FILE"
-perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE >!error.log 2>&1
+echo "Test Run: perf stat xg++ -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE"
+perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE >!error.log 2>&1
+echo "Test Run: perf stat xg++ -c $FILE"
+perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1
 
-echo "Test Run: /usr/bin/time -v xg++ -DGSOC23_BENCH_A -c $FILE"
-/usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE >!error.log 2>&1
-echo "Test Run: /usr/bin/time -v xg++ -DGSOC23_BENCH_B -c $FILE"
-/usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE >!error.log 2>&1
+echo "Test Run: /usr/bin/time -v xg++ -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE"
+/usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE >!error.log 2>&1
+echo "Test Run: /usr/bin/time -v xg++ -c $FILE"
+/usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1
 
-echo "Test Run: xg++ -ftime-report -DGSOC23_BENCH_A -c $FILE"
-xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE >!error.log 2>&1
-echo "Test Run: xg++ -ftime-report -DGSOC23_BENCH_B -c $FILE"
-xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE >!error.log 2>&1
+echo "Test Run: xg++ -ftime-report -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE"
+xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE >!error.log 2>&1
+echo "Test Run: xg++ -ftime-report -c $FILE"
+xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE >!error.log 2>&1
 
 echo '\n=== Running benchmark ==='
 
@@ -93,26 +92,10 @@ echo '\n=== Running benchmark ==='
 REPORT_FILE="$FILENAME.md"
 touch "$REPORT_FILE"
 echo "## $(date)" >> "$REPORT_FILE"
-echo '\n<PUT PERMALINK TO THE BENCHMARK FILE HERE>\n' >> "$REPORT_FILE"
 
 echo '\n```console' >> "$REPORT_FILE"
 echo '$ xg++ --version' >> "$REPORT_FILE"
 xg++ --version >> "$REPORT_FILE"
-echo '```\n' >> "$REPORT_FILE"
-
-pushd "$XGPP_DIR"
-BASE_COMMIT=$(git rev-parse HEAD~"$NUM_COMMITS")
-COMMITS_MADE=$(git log -n "$NUM_COMMITS" --pretty=format:%H)
-popd
-
-echo '```console' >> "$REPORT_FILE"
-echo "$ git rev-parse HEAD~"$NUM_COMMITS"  # base commit" >> "$REPORT_FILE"
-echo "$BASE_COMMIT" >> "$REPORT_FILE"
-echo '```\n' >> "$REPORT_FILE"
-
-echo '```console' >> "$REPORT_FILE"
-echo "$ git log -n "$NUM_COMMITS" --pretty=format:%H  # changes from the base" >> "$REPORT_FILE"
-echo "$COMMITS_MADE" >> "$REPORT_FILE"
 echo '```\n' >> "$REPORT_FILE"
 
 
@@ -122,32 +105,32 @@ TMP_DIR=$(mktemp -d)
 # Run time benchmark
 echo '### Time' | tee -a "$REPORT_FILE"
 
-## Run warmup for A
-echo "A: Running warmup ($WARMUP_SIZE)"
+## Run warmup with non-built-in
+echo "W/o built-in: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > /dev/null
-## Run samples for A
-echo "A: Running samples ($SAMPLE_SIZE)"
+## Run samples with non-built-in
+echo "W/o built-in: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
-done > "$TMP_DIR/time_A.txt"
+    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+done > "$TMP_DIR/time_no_builtin.txt"
 
-## Run warmup for B
-echo "B: Running warmup ($WARMUP_SIZE)"
+## Run warmup with built-in
+echo "With built-in: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
 done > /dev/null
-## Run samples for B
-echo "B: Running samples ($SAMPLE_SIZE)"
+## Run samples with built-in
+echo "With built-in: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
-done > "$TMP_DIR/time_B.txt"
+    perf stat -r 1 xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep 'seconds time elapsed' | awk '{print $1}'
+done > "$TMP_DIR/time_builtin.txt"
 
 # Show statistics for time
 echo '\n```console' >> "$REPORT_FILE"
 echo "$ perf stat xg++ -std=$CXX_VERSION -c $FILE" >> "$REPORT_FILE"
-ministat -w 70 "$TMP_DIR/time_A.txt" "$TMP_DIR/time_B.txt" | tee -a "$REPORT_FILE"
+ministat -w 70 "$TMP_DIR/time_no_builtin.txt" "$TMP_DIR/time_builtin.txt" | tee -a "$REPORT_FILE"
 echo '```' >> "$REPORT_FILE"
 
 
@@ -157,32 +140,32 @@ echo '' | tee -a "$REPORT_FILE"
 # Run peak memory usage benchmark
 echo '### Peak Memory Usage' | tee -a "$REPORT_FILE"
 
-## Run warmup for A
-echo "A: Running warmup ($WARMUP_SIZE)"
+## Run warmup with non-built-in
+echo "W/o built-in: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > /dev/null
-## Run samples for A
-echo "A: Running samples ($SAMPLE_SIZE)"
+## Run samples with non-built-in
+echo "W/o built-in: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
-done > "$TMP_DIR/peak_mem_A.txt"
+    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+done > "$TMP_DIR/peak_mem_no_builtin.txt"
 
-## Run warmup for B
-echo "B: Running warmup ($WARMUP_SIZE)"
+## Run warmup with built-in
+echo "With built-in: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
 done > /dev/null
-## Run samples for B
-echo "B: Running samples ($SAMPLE_SIZE)"
+## Run samples with built-in
+echo "With built-in: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
-done > "$TMP_DIR/peak_mem_B.txt"
+    /usr/bin/time -v xg++ -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep 'Maximum resident set size' | awk '{print $6}'
+done > "$TMP_DIR/peak_mem_builtin.txt"
 
 # Show statistics for peak memory usage
 echo '\n```console' >> "$REPORT_FILE"
 echo "$ /usr/bin/time -v xg++ -std=$CXX_VERSION -c $FILE" >> "$REPORT_FILE"
-ministat -w 70 "$TMP_DIR/peak_mem_A.txt" "$TMP_DIR/peak_mem_B.txt" | tee -a "$REPORT_FILE"
+ministat -w 70 "$TMP_DIR/peak_mem_no_builtin.txt" "$TMP_DIR/peak_mem_builtin.txt" | tee -a "$REPORT_FILE"
 echo '```' >> "$REPORT_FILE"
 
 
@@ -192,32 +175,32 @@ echo '' | tee -a "$REPORT_FILE"
 # Run total memory usage benchmark
 echo '### Total Memory Usage' | tee -a "$REPORT_FILE"
 
-## Run warmup for A
-echo "A: Running warmup ($WARMUP_SIZE)"
+## Run warmup with non-built-in
+echo "W/o built-in: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > /dev/null
-## Run samples for A
-echo "A: Running samples ($SAMPLE_SIZE)"
+## Run samples with non-built-in
+echo "W/o built-in: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_A -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
-done > "$TMP_DIR/total_mem_A.txt"
+    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+done > "$TMP_DIR/total_mem_no_builtin.txt"
 
-## Run warmup for B
-echo "B: Running warmup ($WARMUP_SIZE)"
+## Run warmup with built-in
+echo "With built-in: Running warmup ($WARMUP_SIZE)"
 for i in $(seq $WARMUP_SIZE); do
-    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
 done > /dev/null
-## Run samples for B
-echo "B: Running samples ($SAMPLE_SIZE)"
+## Run samples with built-in
+echo "With built-in: Running samples ($SAMPLE_SIZE)"
 for i in $(seq $SAMPLE_SIZE); do
-    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -DGSOC23_BENCH_B -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
-done > "$TMP_DIR/total_mem_B.txt"
+    xg++ -ftime-report -std=$CXX_VERSION -I"$INCLUDE_PATH1" -I"$INCLUDE_PATH2" -I"$INCLUDE_PATH3" -c $FILE 2>&1 | grep TOTAL | awk '{print $6}' | sed 's/M$//'
+done > "$TMP_DIR/total_mem_builtin.txt"
 
 # Show statistics for total memory usage
 echo '\n```console' >> "$REPORT_FILE"
 echo "$ xg++ -ftime-report -std=$CXX_VERSION -c $FILE" >> "$REPORT_FILE"
-ministat -w 70 "$TMP_DIR/total_mem_A.txt" "$TMP_DIR/total_mem_B.txt" | tee -a "$REPORT_FILE"
+ministat -w 70 "$TMP_DIR/total_mem_no_builtin.txt" "$TMP_DIR/total_mem_builtin.txt" | tee -a "$REPORT_FILE"
 echo '```' >> "$REPORT_FILE"
 
 
