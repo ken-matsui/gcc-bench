@@ -88,3 +88,9 @@ make bench_is_array_v
 ```bash
 python3 ./scripts/gen-charts.py
 ```
+
+## Format codes
+
+```bash
+make format
+```
