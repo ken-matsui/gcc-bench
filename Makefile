@@ -23,7 +23,7 @@ WARMUP_SIZE := 3
 
 .PHONY: clean
 clean:
-	rm -rf *.o ./reports/$*
+	rm -f *.o
 
 
 format:
