@@ -40,9 +40,9 @@ build_all: $(foreach trait, $(TRAITS), build_$(trait))
 perf_setup:
 	sudo sysctl -w kernel.perf_event_paranoid=1
 
-run_time_no_builtin_%: %.cc perf_setup
+run_time_no_builtin_%: %.cc
 	perf stat -r 1 $(CXX) $< $(NO_BUILTIN) $(OPTIONS)
-run_time_builtin_%: %.cc perf_setup
+run_time_builtin_%: %.cc
 	perf stat -r 1 $(CXX) $< $(OPTIONS)
 
 warmup_time_no_builtin_%: %.cc
@@ -142,7 +142,7 @@ bench_%: %.cc
 	@echo '--- Total memory: $* ---'
 	@$(MAKE) bench_total_mem_$*
 
-bench_all: $(foreach trait, $(TRAITS), bench_$(trait))
+bench_all: perf_setup $(foreach trait, $(TRAITS), bench_$(trait))
 
 
 gen_report_%:
