@@ -35,7 +35,7 @@ def parse_markdown(file_path):
     return Trait(before_time, after_time, before_peak_mem, after_peak_mem, before_total_mem, after_total_mem)
 
 def plot_bar_chart(hash_map, attribute_before, attribute_after, title, output_filename):
-    keys = list(hash_map.keys())
+    keys = sorted(hash_map.keys())
 
     before_values = [getattr(hash_map[key], attribute_before) for key in keys]
     after_values = [getattr(hash_map[key], attribute_after) for key in keys]

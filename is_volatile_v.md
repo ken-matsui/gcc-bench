@@ -95,3 +95,85 @@ Difference at 95.0% confidence
 
 ---
 
+## Sun Oct 22 01:26:25 AM PDT 2023
+
+```console
+$ xg++ --version
+xg++ (GCC) 14.0.0 20231016 (experimental)
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+```
+
+### Time
+
+```console
+$ perf stat xg++ -std=c++2b -c is_volatile_v.cc
+x /tmp/tmp.oFeMkAwSaW/time_no_builtin.txt
++ /tmp/tmp.oFeMkAwSaW/time_builtin.txt
++----------------------------------------------------------------------+
+|        x              +                                              |
+|  +     x              ++                                             |
+|+ ++ x xx   x          ++  +      x     x        x                   x|
+| |__|_______M__A_______MA__|___________________|                      |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     2.9725935     3.5246324     3.0300143     3.1351698    0.19508824
++  10     2.9272503     3.1602678     3.1286058     3.0578955    0.10020114
+No difference proven at 95.0% confidence
+```
+
+### Peak Memory Usage
+
+```console
+$ /usr/bin/time -v xg++ -std=c++2b -c is_volatile_v.cc
+x /tmp/tmp.oFeMkAwSaW/peak_mem_no_builtin.txt
++ /tmp/tmp.oFeMkAwSaW/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+|  +                                                                   |
+|  +                                                                   |
+|+ +                                                               xxx |
+|+++                                                               xxx |
+|+++                                                               xxxx|
+| AM                                                               |A| |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10        911260        911488        911364      911350.8     66.960685
++  10        905952        906092        906076      906046.8     53.766573
+Difference at 95.0% confidence
+	-5304 +/- 57.0551
+	-0.581993% +/- 0.0062605%
+	(Student's t, pooled s = 60.7231)
+```
+
+### Total Memory Usage
+
+```console
+$ xg++ -ftime-report -std=c++2b -c is_volatile_v.cc
+x /tmp/tmp.oFeMkAwSaW/total_mem_no_builtin.txt
++ /tmp/tmp.oFeMkAwSaW/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1053          1053          1053          1053             0
++  10          1045          1045          1045          1045             0
+Difference at 95.0% confidence
+	-8 +/- 0
+	-0.759734% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

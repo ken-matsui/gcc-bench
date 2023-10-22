@@ -95,3 +95,84 @@ Difference at 95.0% confidence
 
 ---
 
+## Sat Oct 21 09:07:10 PM PDT 2023
+
+```console
+$ xg++ --version
+xg++ (GCC) 14.0.0 20231016 (experimental)
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+```
+
+### Time
+
+```console
+$ perf stat xg++ -std=c++2b -c is_const_v.cc
+x /tmp/tmp.shmGiKjlLP/time_no_builtin.txt
++ /tmp/tmp.shmGiKjlLP/time_builtin.txt
++----------------------------------------------------------------------+
+|            +x   x                                                    |
+|   +     ++ ** + x x +*                                              +|
+||___________|M_A_M_A_________________|                                |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     3.0253811     3.1380586     3.0845513     3.0694214   0.036943147
++  10     2.9346009     3.6644088     3.0363344     3.1034796    0.20638017
+No difference proven at 95.0% confidence
+```
+
+### Peak Memory Usage
+
+```console
+$ /usr/bin/time -v xg++ -std=c++2b -c is_const_v.cc
+x /tmp/tmp.shmGiKjlLP/peak_mem_no_builtin.txt
++ /tmp/tmp.shmGiKjlLP/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+|  +                                                                   |
+|  +                                                                 x |
+|  +                                                                xx |
+| +++                                                               xx |
+|++++                                                            x xxxx|
+| |A|                                                              |AM||
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10        910328        910704        910624      910573.6     108.24171
++  10        905228        905492        905404      905373.6     84.710225
+Difference at 95.0% confidence
+	-5200 +/- 91.32
+	-0.571069% +/- 0.0100288%
+	(Student's t, pooled s = 97.1908)
+```
+
+### Total Memory Usage
+
+```console
+$ xg++ -ftime-report -std=c++2b -c is_const_v.cc
+x /tmp/tmp.shmGiKjlLP/total_mem_no_builtin.txt
++ /tmp/tmp.shmGiKjlLP/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1052          1052          1052          1052             0
++  10          1044          1044          1044          1044             0
+Difference at 95.0% confidence
+	-8 +/- 0
+	-0.760456% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

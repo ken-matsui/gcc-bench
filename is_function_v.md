@@ -106,3 +106,92 @@ Difference at 95.0% confidence
 
 ---
 
+## Sat Oct 21 09:21:07 PM PDT 2023
+
+```console
+$ xg++ --version
+xg++ (GCC) 14.0.0 20231016 (experimental)
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+```
+
+### Time
+
+```console
+$ perf stat xg++ -std=c++2b -c is_function_v.cc
+x /tmp/tmp.pikFbGZUHI/time_no_builtin.txt
++ /tmp/tmp.pikFbGZUHI/time_builtin.txt
++----------------------------------------------------------------------+
+|           +                               x          x               |
+|++    +++++++                              x   xx     xxx        x   x|
+|   |____AM__|                                |_______AM_______|       |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     4.5059371       4.97961     4.7021162     4.6921538    0.15706799
++  10     3.7080168     3.9268816      3.877854     3.8472117   0.079449808
+Difference at 95.0% confidence
+	-0.844942 +/- 0.116946
+	-18.0076% +/- 2.49237%
+	(Student's t, pooled s = 0.124464)
+```
+
+### Peak Memory Usage
+
+```console
+$ /usr/bin/time -v xg++ -std=c++2b -c is_function_v.cc
+x /tmp/tmp.pikFbGZUHI/peak_mem_no_builtin.txt
++ /tmp/tmp.pikFbGZUHI/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10       1081776       1082304       1082084     1082087.6      174.5949
++  10        974164        974344        974288      974273.2     56.664313
+Difference at 95.0% confidence
+	-107814 +/- 121.956
+	-9.96356% +/- 0.0112705%
+	(Student's t, pooled s = 129.796)
+```
+
+### Total Memory Usage
+
+```console
+$ xg++ -ftime-report -std=c++2b -c is_function_v.cc
+x /tmp/tmp.pikFbGZUHI/total_mem_no_builtin.txt
++ /tmp/tmp.pikFbGZUHI/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1269          1269          1269          1269             0
++  10          1138          1138          1138          1138             0
+Difference at 95.0% confidence
+	-131 +/- 0
+	-10.3231% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

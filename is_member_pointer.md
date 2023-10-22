@@ -1,4 +1,4 @@
-## Sat Oct 21 07:43:02 PM PDT 2023
+## Sat Oct 21 11:02:39 PM PDT 2023
 
 ```console
 $ xg++ --version
@@ -12,28 +12,33 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ### Time
 
 ```console
-$ perf stat xg++ -std=c++2b -c is_bounded_array.cc
-x /tmp/tmp.cRO6FDhoSh/time_no_builtin.txt
-+ /tmp/tmp.cRO6FDhoSh/time_builtin.txt
+$ perf stat xg++ -std=c++2b -c is_member_pointer.cc
+x /tmp/tmp.XSVqMq0WXE/time_no_builtin.txt
++ /tmp/tmp.XSVqMq0WXE/time_builtin.txt
 +----------------------------------------------------------------------+
-| +    ++ ++    +  x *   x   +                  x+  xx   x        x +xx|
-||______________M_____A_____|______________|____A____M______________|  |
+|+                                                                     |
+|+                                                                     |
+|+                                                                     |
+|+                                                               x     |
+|+ +                                                             x  x  |
+|+ +++                                                          xxxxxxx|
+|MA_|                                                            |_A_| |
 +----------------------------------------------------------------------+
     N           Min           Max        Median           Avg        Stddev
-x  10     34.720051     37.512611     36.608516      36.32055     1.0763651
-+  10      33.82108     37.380262     34.562138     34.901726      1.145242
+x  10     21.914079     22.980079     22.492233     22.339249    0.39897838
++  10     9.8454666     10.494251     9.8834543      10.05134    0.24810386
 Difference at 95.0% confidence
-	-1.41882 +/- 1.04421
-	-3.90639% +/- 2.87498%
-	(Student's t, pooled s = 1.11134)
+	-12.2879 +/- 0.312152
+	-55.0059% +/- 1.39732%
+	(Student's t, pooled s = 0.332219)
 ```
 
 ### Peak Memory Usage
 
 ```console
-$ /usr/bin/time -v xg++ -std=c++2b -c is_bounded_array.cc
-x /tmp/tmp.cRO6FDhoSh/peak_mem_no_builtin.txt
-+ /tmp/tmp.cRO6FDhoSh/peak_mem_builtin.txt
+$ /usr/bin/time -v xg++ -std=c++2b -c is_member_pointer.cc
+x /tmp/tmp.XSVqMq0WXE/peak_mem_no_builtin.txt
++ /tmp/tmp.XSVqMq0WXE/peak_mem_builtin.txt
 +----------------------------------------------------------------------+
 |+                                                                    x|
 |+                                                                    x|
@@ -48,20 +53,20 @@ x /tmp/tmp.cRO6FDhoSh/peak_mem_no_builtin.txt
 |A                                                                    A|
 +----------------------------------------------------------------------+
     N           Min           Max        Median           Avg        Stddev
-x  10       4788332       4788752       4788636     4788553.6     182.10815
-+  10       4725676       4726104       4725900     4725871.2     155.52406
+x  10       4118276       4118644       4118404     4118422.8     114.29474
++  10       2150352       2150592       2150472     2150458.4      82.54184
 Difference at 95.0% confidence
-	-62682.4 +/- 159.11
-	-1.309% +/- 0.00332271%
-	(Student's t, pooled s = 169.339)
+	-1.96796e+06 +/- 93.6689
+	-47.7844% +/- 0.00227439%
+	(Student's t, pooled s = 99.6906)
 ```
 
 ### Total Memory Usage
 
 ```console
-$ xg++ -ftime-report -std=c++2b -c is_bounded_array.cc
-x /tmp/tmp.cRO6FDhoSh/total_mem_no_builtin.txt
-+ /tmp/tmp.cRO6FDhoSh/total_mem_builtin.txt
+$ xg++ -ftime-report -std=c++2b -c is_member_pointer.cc
+x /tmp/tmp.XSVqMq0WXE/total_mem_no_builtin.txt
++ /tmp/tmp.XSVqMq0WXE/total_mem_builtin.txt
 +----------------------------------------------------------------------+
 |+                                                                    x|
 |+                                                                    x|
@@ -76,11 +81,11 @@ x /tmp/tmp.cRO6FDhoSh/total_mem_no_builtin.txt
 |A                                                                    A|
 +----------------------------------------------------------------------+
     N           Min           Max        Median           Avg        Stddev
-x  10          6062          6062          6062          6062             0
-+  10          5815          5815          5815          5815             0
+x  10          5113          5113          5113          5113             0
++  10          2507          2507          2507          2507             0
 Difference at 95.0% confidence
-	-247 +/- 0
-	-4.07456% +/- 0%
+	-2606 +/- 0
+	-50.9681% +/- 0%
 	(Student's t, pooled s = 0)
 ```
 

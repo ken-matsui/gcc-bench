@@ -1,4 +1,4 @@
-## Sat Oct 21 07:43:02 PM PDT 2023
+## Sat Oct 21 09:12:25 PM PDT 2023
 
 ```console
 $ xg++ --version
@@ -12,28 +12,29 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ### Time
 
 ```console
-$ perf stat xg++ -std=c++2b -c is_bounded_array.cc
-x /tmp/tmp.cRO6FDhoSh/time_no_builtin.txt
-+ /tmp/tmp.cRO6FDhoSh/time_builtin.txt
+$ perf stat xg++ -std=c++2b -c is_function.cc
+x /tmp/tmp.PKZGYrLLfi/time_no_builtin.txt
++ /tmp/tmp.PKZGYrLLfi/time_builtin.txt
 +----------------------------------------------------------------------+
-| +    ++ ++    +  x *   x   +                  x+  xx   x        x +xx|
-||______________M_____A_____|______________|____A____M______________|  |
+|+         +           +                   x              x            |
+|+ +       +    ++ +   +                   x   x    x    xx x      x  x|
+|   |_______A___M____|                        |________A__M______|     |
 +----------------------------------------------------------------------+
     N           Min           Max        Median           Avg        Stddev
-x  10     34.720051     37.512611     36.608516      36.32055     1.0763651
-+  10      33.82108     37.380262     34.562138     34.901726      1.145242
+x  10     5.7556625     6.3289907     6.0696598      6.023702     0.1983235
++  10     4.8767241     5.3436679     5.1825268     5.1165366    0.17771893
 Difference at 95.0% confidence
-	-1.41882 +/- 1.04421
-	-3.90639% +/- 2.87498%
-	(Student's t, pooled s = 1.11134)
+	-0.907165 +/- 0.176929
+	-15.0599% +/- 2.93721%
+	(Student's t, pooled s = 0.188303)
 ```
 
 ### Peak Memory Usage
 
 ```console
-$ /usr/bin/time -v xg++ -std=c++2b -c is_bounded_array.cc
-x /tmp/tmp.cRO6FDhoSh/peak_mem_no_builtin.txt
-+ /tmp/tmp.cRO6FDhoSh/peak_mem_builtin.txt
+$ /usr/bin/time -v xg++ -std=c++2b -c is_function.cc
+x /tmp/tmp.PKZGYrLLfi/peak_mem_no_builtin.txt
++ /tmp/tmp.PKZGYrLLfi/peak_mem_builtin.txt
 +----------------------------------------------------------------------+
 |+                                                                    x|
 |+                                                                    x|
@@ -48,20 +49,20 @@ x /tmp/tmp.cRO6FDhoSh/peak_mem_no_builtin.txt
 |A                                                                    A|
 +----------------------------------------------------------------------+
     N           Min           Max        Median           Avg        Stddev
-x  10       4788332       4788752       4788636     4788553.6     182.10815
-+  10       4725676       4726104       4725900     4725871.2     155.52406
+x  10       1445900       1446544       1446336     1446327.6     169.65796
++  10       1180432       1180780       1180664     1180605.6     119.70631
 Difference at 95.0% confidence
-	-62682.4 +/- 159.11
-	-1.309% +/- 0.00332271%
-	(Student's t, pooled s = 169.339)
+	-265722 +/- 137.953
+	-18.3722% +/- 0.00953818%
+	(Student's t, pooled s = 146.822)
 ```
 
 ### Total Memory Usage
 
 ```console
-$ xg++ -ftime-report -std=c++2b -c is_bounded_array.cc
-x /tmp/tmp.cRO6FDhoSh/total_mem_no_builtin.txt
-+ /tmp/tmp.cRO6FDhoSh/total_mem_builtin.txt
+$ xg++ -ftime-report -std=c++2b -c is_function.cc
+x /tmp/tmp.PKZGYrLLfi/total_mem_no_builtin.txt
++ /tmp/tmp.PKZGYrLLfi/total_mem_builtin.txt
 +----------------------------------------------------------------------+
 |+                                                                    x|
 |+                                                                    x|
@@ -76,11 +77,11 @@ x /tmp/tmp.cRO6FDhoSh/total_mem_no_builtin.txt
 |A                                                                    A|
 +----------------------------------------------------------------------+
     N           Min           Max        Median           Avg        Stddev
-x  10          6062          6062          6062          6062             0
-+  10          5815          5815          5815          5815             0
+x  10          1721          1721          1721          1721             0
++  10          1426          1426          1426          1426             0
 Difference at 95.0% confidence
-	-247 +/- 0
-	-4.07456% +/- 0%
+	-295 +/- 0
+	-17.1412% +/- 0%
 	(Student's t, pooled s = 0)
 ```
 
