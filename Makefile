@@ -68,7 +68,7 @@ bench_time_builtin_%: %.cc
 	done > ./reports/built-ins/$*/time_builtin.txt
 
 bench_time_%: warmup_time_no_builtin_% bench_time_no_builtin_% warmup_time_builtin_% bench_time_builtin_%
-	ministat -w 70 ./reports/built-ins/$*/time_no_builtin.txt ./reports/$*/time_builtin.txt
+	ministat -w 70 ./reports/built-ins/$*/time_no_builtin.txt ./reports/built-ins/$*/time_builtin.txt
 
 
 run_peak_mem_no_builtin_%: %.cc
@@ -99,7 +99,7 @@ bench_peak_mem_builtin_%: %.cc
 	done > ./reports/built-ins/$*/peak_mem_builtin.txt
 
 bench_peak_mem_%: warmup_peak_mem_no_builtin_% bench_peak_mem_no_builtin_% warmup_peak_mem_builtin_% bench_peak_mem_builtin_%
-	ministat -w 70 ./reports/built-ins/$*/peak_mem_no_builtin.txt ./reports/$*/peak_mem_builtin.txt
+	ministat -w 70 ./reports/built-ins/$*/peak_mem_no_builtin.txt ./reports/built-ins/$*/peak_mem_builtin.txt
 
 
 run_total_mem_no_builtin_%: %.cc
@@ -130,11 +130,11 @@ bench_total_mem_builtin_%: %.cc
 	done > ./reports/built-ins/$*/total_mem_builtin.txt
 
 bench_total_mem_%: warmup_total_mem_no_builtin_% bench_total_mem_no_builtin_% warmup_total_mem_builtin_% bench_total_mem_builtin_%
-	ministat -w 70 ./reports/built-ins/$*/total_mem_no_builtin.txt ./reports/$*/total_mem_builtin.txt
+	ministat -w 70 ./reports/built-ins/$*/total_mem_no_builtin.txt ./reports/built-ins/$*/total_mem_builtin.txt
 
 
 bench_%: %.cc
-	mkdir -p ./reports/$*
+	mkdir -p ./reports/built-ins/$*
 	@echo '--- Time: $* ---'
 	@$(MAKE) bench_time_$*
 	@echo '--- Peak memory: $* ---'
@@ -150,17 +150,17 @@ gen_report_%:
 
 	echo '### Time\n' >> ./$*.md
 	echo '```console' >> ./$*.md
-	ministat -w 70 ./reports/built-ins/$*/time_no_builtin.txt ./reports/$*/time_builtin.txt >> ./$*.md
+	ministat -w 70 ./reports/built-ins/$*/time_no_builtin.txt ./reports/built-ins/$*/time_builtin.txt >> ./$*.md
 	echo '```\n' >> ./$*.md
 
 	echo '### Peak Memory Usage\n' >> ./$*.md
 	echo '```console' >> ./$*.md
-	ministat -w 70 ./reports/built-ins/$*/peak_mem_no_builtin.txt ./reports/$*/peak_mem_builtin.txt >> ./$*.md
+	ministat -w 70 ./reports/built-ins/$*/peak_mem_no_builtin.txt ./reports/built-ins/$*/peak_mem_builtin.txt >> ./$*.md
 	echo '```\n' >> ./$*.md
 
 	echo '### Total Memory Usage\n' >> ./$*.md
 	echo '```console' >> ./$*.md
-	ministat -w 70 ./reports/built-ins/$*/total_mem_no_builtin.txt ./reports/$*/total_mem_builtin.txt >> ./$*.md
+	ministat -w 70 ./reports/built-ins/$*/total_mem_no_builtin.txt ./reports/built-ins/$*/total_mem_builtin.txt >> ./$*.md
 	echo '```\n' >> ./$*.md
 
 	echo '---\n' >> ./$*.md
