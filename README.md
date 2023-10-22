@@ -68,18 +68,14 @@ make build_all
 ## Benchmark
 
 ```bash
-./scripts/bench.sh is_object.cc
-```
-
-```bash
-make bench_all
 make bench_is_array_v
+make bench_all
 ```
 
 ## gen-charts.py
 
 ```bash
-python3 ./scripts/gen-charts.py
+make gen_charts
 ```
 
 ## Format codes

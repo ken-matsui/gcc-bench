@@ -15,31 +15,157 @@ INCLUDE_PATHS := \
 CXX_VERSION := c++2b
 
 OPTIONS := -quiet -std=$(CXX_VERSION) $(addprefix -I,$(INCLUDE_PATHS))
+NO_BUILTIN := -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS
+
+SAMPLE_SIZE := 10
+WARMUP_SIZE := 3
 
 
+.PHONY: clean
 clean:
-	rm -f *.o
+	rm -rf *.o ./reports/$*
+
 
 format:
 	find . -name "*.hpp" -o -name "*.cc" | xargs clang-format -i
 
 
-define generate-builds
-build_$(1): $(1).cc
-	$(CXX) $(1).cc $(OPTIONS)
-	$(CXX) $(1).cc -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS $(OPTIONS)
-endef
-
-$(foreach trait, $(TRAITS), $(eval $(call generate-builds,$(trait))))
+build_%: %.cc
+	$(CXX) $< $(OPTIONS)
+	$(CXX) $< $(NO_BUILTIN) $(OPTIONS)
 
 build_all: $(foreach trait, $(TRAITS), build_$(trait))
 
 
-define generate-benches
-bench_$(1):
-	./scripts/bench.sh $(1).cc
-endef
+perf_setup:
+	sudo sysctl -w kernel.perf_event_paranoid=1
 
-$(foreach trait, $(TRAITS), $(eval $(call generate-benches,$(trait))))
+run_time_no_builtin_%: %.cc perf_setup
+	perf stat -r 1 $(CXX) $< $(NO_BUILTIN) $(OPTIONS)
+run_time_builtin_%: %.cc perf_setup
+	perf stat -r 1 $(CXX) $< $(OPTIONS)
+
+warmup_time_no_builtin_%: %.cc
+	@echo 'W/o built-in: Running warmup ($(WARMUP_SIZE))'
+	@for i in `seq $(WARMUP_SIZE)`; do \
+		$(MAKE) run_time_no_builtin_$* 2>&1 | grep 'seconds time elapsed' | awk '{print $$1}'; \
+	done > /dev/null
+warmup_time_builtin_%: %.cc
+	@echo 'With built-in: Running warmup ($(WARMUP_SIZE))'
+	@for i in `seq $(WARMUP_SIZE)`; do \
+		$(MAKE) run_time_builtin_$* 2>&1 | grep 'seconds time elapsed' | awk '{print $$1}'; \
+	done > /dev/null
+
+bench_time_no_builtin_%: %.cc
+	@echo 'W/o built-in: Running samples ($(SAMPLE_SIZE))'
+	@for i in `seq $(SAMPLE_SIZE)`; do \
+		$(MAKE) run_time_no_builtin_$* 2>&1 | grep 'seconds time elapsed' | awk '{print $$1}'; \
+	done > ./reports/$*/time_no_builtin.txt
+bench_time_builtin_%: %.cc
+	@echo 'With built-in: Running samples ($(SAMPLE_SIZE))'
+	@for i in `seq $(SAMPLE_SIZE)`; do \
+		$(MAKE) run_time_builtin_$* 2>&1 | grep 'seconds time elapsed' | awk '{print $$1}'; \
+	done > ./reports/$*/time_builtin.txt
+
+bench_time_%: warmup_time_no_builtin_% bench_time_no_builtin_% warmup_time_builtin_% bench_time_builtin_%
+	ministat -w 70 ./reports/$*/time_no_builtin.txt ./reports/$*/time_builtin.txt
+
+
+run_peak_mem_no_builtin_%: %.cc
+	/usr/bin/time -v $(CXX) $< $(NO_BUILTIN) $(OPTIONS)
+run_peak_mem_builtin_%: %.cc
+	/usr/bin/time -v $(CXX) $< $(OPTIONS)
+
+warmup_peak_mem_no_builtin_%: %.cc
+	@echo 'W/o built-in: Running warmup ($(WARMUP_SIZE))'
+	@for i in `seq $(WARMUP_SIZE)`; do \
+		$(MAKE) run_peak_mem_no_builtin_$* 2>&1 | grep 'Maximum resident set size' | awk '{print $$6}'; \
+	done > /dev/null
+warmup_peak_mem_builtin_%: %.cc
+	@echo 'W/o built-in: Running samples ($(SAMPLE_SIZE))'
+	@for i in `seq $(WARMUP_SIZE)`; do \
+		$(MAKE) run_peak_mem_builtin_$* 2>&1 | grep 'Maximum resident set size' | awk '{print $$6}'; \
+	done > /dev/null
+
+bench_peak_mem_no_builtin_%: %.cc
+	@echo 'With built-in: Running warmup ($(WARMUP_SIZE))'
+	@for i in `seq $(SAMPLE_SIZE)`; do \
+		$(MAKE) run_peak_mem_no_builtin_$* 2>&1 | grep 'Maximum resident set size' | awk '{print $$6}'; \
+	done > ./reports/$*/peak_mem_no_builtin.txt
+bench_peak_mem_builtin_%: %.cc
+	@echo 'With built-in: Running samples ($(SAMPLE_SIZE))'
+	@for i in `seq $(SAMPLE_SIZE)`; do \
+		$(MAKE) run_peak_mem_builtin_$* 2>&1 | grep 'Maximum resident set size' | awk '{print $$6}'; \
+	done > ./reports/$*/peak_mem_builtin.txt
+
+bench_peak_mem_%: warmup_peak_mem_no_builtin_% bench_peak_mem_no_builtin_% warmup_peak_mem_builtin_% bench_peak_mem_builtin_%
+	ministat -w 70 ./reports/$*/peak_mem_no_builtin.txt ./reports/$*/peak_mem_builtin.txt
+
+
+run_total_mem_no_builtin_%: %.cc
+	$(CXX) -ftime-report $< $(NO_BUILTIN) $(OPTIONS)
+run_total_mem_builtin_%: %.cc
+	$(CXX) -ftime-report $< $(OPTIONS)
+
+warmup_total_mem_no_builtin_%: %.cc
+	@echo 'W/o built-in: Running warmup ($(WARMUP_SIZE))'
+	@for i in `seq $(WARMUP_SIZE)`; do \
+		$(MAKE) run_total_mem_no_builtin_$* 2>&1 | grep TOTAL | awk '{print $$6}' | sed 's/M$$//'; \
+	done > /dev/null
+warmup_total_mem_builtin_%: %.cc
+	@echo 'W/o built-in: Running samples ($(SAMPLE_SIZE))'
+	@for i in `seq $(WARMUP_SIZE)`; do \
+		$(MAKE) run_total_mem_builtin_$* 2>&1 | grep TOTAL | awk '{print $$6}' | sed 's/M$$//'; \
+	done > /dev/null
+
+bench_total_mem_no_builtin_%: %.cc
+	@echo 'With built-in: Running warmup ($(WARMUP_SIZE))'
+	@for i in `seq $(SAMPLE_SIZE)`; do \
+		$(MAKE) run_total_mem_no_builtin_$* 2>&1 | grep TOTAL | awk '{print $$6}' | sed 's/M$$//'; \
+	done > ./reports/$*/total_mem_no_builtin.txt
+bench_total_mem_builtin_%: %.cc
+	@echo 'With built-in: Running samples ($(SAMPLE_SIZE))'
+	@for i in `seq $(SAMPLE_SIZE)`; do \
+		$(MAKE) run_total_mem_builtin_$* 2>&1 | grep TOTAL | awk '{print $$6}' | sed 's/M$$//'; \
+	done > ./reports/$*/total_mem_builtin.txt
+
+bench_total_mem_%: warmup_total_mem_no_builtin_% bench_total_mem_no_builtin_% warmup_total_mem_builtin_% bench_total_mem_builtin_%
+	ministat -w 70 ./reports/$*/total_mem_no_builtin.txt ./reports/$*/total_mem_builtin.txt
+
+
+bench_%: %.cc
+	mkdir -p ./reports/$*
+	@echo '--- Time: $* ---'
+	@$(MAKE) bench_time_$*
+	@echo '--- Peak memory: $* ---'
+	@$(MAKE) bench_peak_mem_$*
+	@echo '--- Total memory: $* ---'
+	@$(MAKE) bench_total_mem_$*
 
 bench_all: $(foreach trait, $(TRAITS), bench_$(trait))
+
+
+gen_report_%:
+	echo "## `date`\n" >> ./$*.md
+
+	echo '### Time\n' >> ./$*.md
+	echo '```console' >> ./$*.md
+	ministat -w 70 ./reports/$*/time_no_builtin.txt ./reports/$*/time_builtin.txt >> ./$*.md
+	echo '```\n' >> ./$*.md
+
+	echo '### Peak Memory Usage\n' >> ./$*.md
+	echo '```console' >> ./$*.md
+	ministat -w 70 ./reports/$*/peak_mem_no_builtin.txt ./reports/$*/peak_mem_builtin.txt >> ./$*.md
+	echo '```\n' >> ./$*.md
+
+	echo '### Total Memory Usage\n' >> ./$*.md
+	echo '```console' >> ./$*.md
+	ministat -w 70 ./reports/$*/total_mem_no_builtin.txt ./reports/$*/total_mem_builtin.txt >> ./$*.md
+	echo '```\n' >> ./$*.md
+
+	echo '---\n' >> ./$*.md
+
+gen_report_all: $(foreach trait, $(TRAITS), gen_report_$(trait))
+
+gen_charts:
+	python ./scripts/gen-charts.py
