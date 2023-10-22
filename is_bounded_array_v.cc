@@ -1,5 +1,3 @@
-#include <type_traits>
-
 #include "./Common.hpp"
 
 template <std::size_t N, std::size_t Count>

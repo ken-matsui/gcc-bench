@@ -9,9 +9,7 @@ GCC_DIR := $(GCC_BUILD_DIR)/..
 # Set include & link directories
 INCLUDE_PATHS := \
     $(GCC_BUILD_DIR)/x86_64-pc-linux-gnu/libstdc++-v3/include \
-    $(GCC_BUILD_DIR)/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu \
-    $(GCC_DIR)/gcc/ginclude
-    # for stddef.h
+    $(GCC_BUILD_DIR)/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu
 
 # Set C++ version (C++23 by default)
 CXX_VERSION := c++2b
@@ -29,7 +27,7 @@ format:
 define generate-builds
 build_$(1): $(1).cc
 	$(CXX) $(1).cc $(OPTIONS)
-	$(CXX) $(1).cc $(OPTIONS) -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS
+	$(CXX) $(1).cc -D_GLIBCXX_DO_NOT_USE_BUILTIN_TRAITS $(OPTIONS)
 endef
 
 $(foreach trait, $(TRAITS), $(eval $(call generate-builds,$(trait))))
