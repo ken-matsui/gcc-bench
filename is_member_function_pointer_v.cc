@@ -5,7 +5,8 @@
 template <std::size_t N, std::size_t Count>
 struct gsoc23::Instantiator : gsoc23::Instantiator<N, Count - 1>
 {
-  static_assert (std::is_member_function_pointer_v<int (Instantiator::*) (int)>);
+  static_assert (
+      std::is_member_function_pointer_v<int (Instantiator::*) (int)>);
   static_assert (
       std::is_member_function_pointer_v<int (Instantiator::*) (int) const>);
   static_assert (
@@ -23,7 +24,8 @@ struct gsoc23::Instantiator : gsoc23::Instantiator<N, Count - 1>
 };
 template <std::size_t N> struct gsoc23::Instantiator<N, 0>
 {
-  static_assert (std::is_member_function_pointer_v<int (Instantiator::*) (int)>);
+  static_assert (
+      std::is_member_function_pointer_v<int (Instantiator::*) (int)>);
   static_assert (
       std::is_member_function_pointer_v<int (Instantiator::*) (int) const>);
   static_assert (
