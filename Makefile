@@ -168,4 +168,4 @@ gen_report_%:
 gen_report_all: $(foreach trait, $(TRAITS), gen_report_$(trait))
 
 gen_charts:
-	python ./scripts/gen-charts.py
+	python3 ./scripts/gen-charts.py
