@@ -6,7 +6,6 @@ CC1PLUS_DIR := $(shell dirname $(shell which $(CXX)))
 GCC_BUILD_DIR := $(CC1PLUS_DIR)/..
 GCC_DIR := $(GCC_BUILD_DIR)/..
 
-# Set include & link directories
 INCLUDE_PATHS := \
     $(GCC_BUILD_DIR)/x86_64-pc-linux-gnu/libstdc++-v3/include \
     $(GCC_BUILD_DIR)/x86_64-pc-linux-gnu/libstdc++-v3/include/x86_64-pc-linux-gnu
