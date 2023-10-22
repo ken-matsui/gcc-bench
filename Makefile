@@ -1,6 +1,9 @@
 clean:
 	rm -f *.o
 
+format:
+	find . -name "*.hpp" -o -name "*.cc" | xargs clang-format -i
+
 bench_all: bench_is_array bench_is_array_v bench_is_bonded_array bench_is_bonded_array_v bench_is_const bench_is_const_v bench_is_function bench_is_function_v bench_is_member_function_pointer bench_is_member_function_pointer_v bench_is_member_object_pointer bench_is_member_object_pointer_v bench_is_member_pointer bench_is_member_pointer_v bench_is_object bench_is_object_v bench_is_pointer bench_is_pointer_v bench_is_reference bench_is_reference_v bench_is_scoped_enum bench_is_scoped_enum_v bench_is_unbounded_array bench_is_unbounded_array_v bench_is_volatile bench_is_volatile_v bench_remove_pointer
 
 bench_is_array:
