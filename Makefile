@@ -82,13 +82,13 @@ warmup_peak_mem_no_builtin_%: %.cc
 		$(MAKE) run_peak_mem_no_builtin_$* 2>&1 | grep 'Maximum resident set size' | awk '{print $$6}'; \
 	done > /dev/null
 warmup_peak_mem_builtin_%: %.cc
-	@echo 'W/o built-in: Running samples ($(SAMPLE_SIZE))'
+	@echo 'With built-in: Running warmup ($(WARMUP_SIZE))'
 	@for i in `seq $(WARMUP_SIZE)`; do \
 		$(MAKE) run_peak_mem_builtin_$* 2>&1 | grep 'Maximum resident set size' | awk '{print $$6}'; \
 	done > /dev/null
 
 bench_peak_mem_no_builtin_%: %.cc
-	@echo 'With built-in: Running warmup ($(WARMUP_SIZE))'
+	@echo 'W/o built-in: Running samples ($(SAMPLE_SIZE))'
 	@for i in `seq $(SAMPLE_SIZE)`; do \
 		$(MAKE) run_peak_mem_no_builtin_$* 2>&1 | grep 'Maximum resident set size' | awk '{print $$6}'; \
 	done > ./reports/built-ins/$*/peak_mem_no_builtin.txt
@@ -113,13 +113,13 @@ warmup_total_mem_no_builtin_%: %.cc
 		$(MAKE) run_total_mem_no_builtin_$* 2>&1 | grep TOTAL | awk '{print $$6}' | sed 's/M$$//'; \
 	done > /dev/null
 warmup_total_mem_builtin_%: %.cc
-	@echo 'W/o built-in: Running samples ($(SAMPLE_SIZE))'
+	@echo 'With built-in: Running warmup ($(WARMUP_SIZE))'
 	@for i in `seq $(WARMUP_SIZE)`; do \
 		$(MAKE) run_total_mem_builtin_$* 2>&1 | grep TOTAL | awk '{print $$6}' | sed 's/M$$//'; \
 	done > /dev/null
 
 bench_total_mem_no_builtin_%: %.cc
-	@echo 'With built-in: Running warmup ($(WARMUP_SIZE))'
+	@echo 'W/o built-in: Running samples ($(SAMPLE_SIZE))'
 	@for i in `seq $(SAMPLE_SIZE)`; do \
 		$(MAKE) run_total_mem_no_builtin_$* 2>&1 | grep TOTAL | awk '{print $$6}' | sed 's/M$$//'; \
 	done > ./reports/built-ins/$*/total_mem_no_builtin.txt
