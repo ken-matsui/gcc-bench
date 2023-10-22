@@ -60,16 +60,9 @@ make -j8
 
 ## Build
 
-### Build with built-in
-
 ```bash
-./scripts/build.sh remove_pointer.cc -- --verbose
-```
-
-### Build without built-in
-
-```bash
-./scripts/build.sh remove_pointer.cc --no-builtin -- --verbose
+make build_remove_pointer
+make build_all
 ```
 
 ## Benchmark
