@@ -25,7 +25,7 @@ def calculate_average_for_category(directory, category):
 
 def main():
     categories = ['time', 'peak_mem', 'total_mem']
-    base_directory = "./reports/built-ins/"
+    base_directory = "./reports/builtins/"
 
     total_improvements = {category: 0.0 for category in categories}
     num_directories = 0

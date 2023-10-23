@@ -28,7 +28,7 @@ Before our patches, the above code could not be accepted.  However, our patches 
 I have implemented 15 built-in traits so far, resulting in significant improvements in compilation time, peak memory usage during compilation, and total memory usage during compilation. On average, I have seen a 24.31% improvement in compilation time, a 20.37% improvement in peak memory usage, and a 21.81% improvement in total memory usage.
 
 ```console
-$ python3 ./scripts/stat-builtins.py  # update `base_directory` in main to `./final-report-assets/built-ins/`
+$ python3 ./scripts/stat-builtins.py  # update `base_directory` in main to `./final-report-assets/builtins/`
 ...
 
 Overall averages:
