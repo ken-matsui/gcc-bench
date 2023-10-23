@@ -37,10 +37,13 @@ peak_mem: 20.37%
 total_mem: 21.81%
 ```
 
-<p float="left">
-  <img src="/final-report-assets/time.png" width="33%" />
-  <img src="/final-report-assets/peak_mem.png" width="33%" /> 
-  <img src="/final-report-assets/total_mem.png" width="33%" />
+<p align="center">
+  <img src="/final-report-assets/time.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="/final-report-assets/peak_mem.png" width="45%" /> 
+  <img src="/final-report-assets/total_mem.png" width="45%" />
 </p>
 
 ## The current state
