@@ -1,7 +1,9 @@
 # GSoC'23 Final Report
 
 Student: Ken Matsui
+
 Mentor: Patrick Palka
+
 Organization: GNU Compiler Collection
 
 ## Short description
@@ -12,7 +14,7 @@ Many C++ standard library traits are often implemented using template metaprogra
 
 ## What I did so far
 
-35 patches have been created, 33 of which are awaiting review.  Those patches include not only built-in trait implementations but also improvements on how we deal with built-in trait identifiers.  Specifically, built-in traits were previously handled as registered keywords, but since keywords are limited to 8 bits (i.e., up to 255 keywords), adding handreds of built-in traits exceeded the limit.  As increasing the limit decreased the performance of compilation, we instead used the identifier kind to handle built-in traits.  Through it, we can look up for built-ins in O(1).  Also, before our patches, the following code cannot be accepted:
+35 patches have been created, 33 of which are awaiting review.  Those patches include not only built-in trait implementations but also improvements in how we deal with built-in trait identifiers.  Specifically, built-in traits were previously handled as registered keywords, but since keywords are limited to 8 bits (i.e., up to 255 keywords), adding hundreds of built-in traits exceeded the limit.  As increasing the limit decreased the performance of compilation, we instead used the identifier kind to handle built-in traits.  Through it, we can look up for built-ins in O(1).  Also, before our patches, the following code could not be accepted:
 
 ```cpp
 #include <type_traits>
@@ -23,7 +25,7 @@ struct __is_pointer : std::bool_constant<__is_pointer(T)> {};
 
 However, our patches can now accept the code like this by recognizing built-in traits only with the preceding token `(` or `<` (only for `__type_pack_element`) to reduce potential breakage of existing codes.
 
-So far, I implemented 15 built-in traits, resulting in 24.31% compilation time improvements, 20.37% compilation peak memory improvements, and 21.81% compilation total memory improvements on average.
+So far, I have implemented 15 built-in traits, resulting in 24.31% compilation time improvements, 20.37% compilation peak memory improvements, and 21.81% compilation total memory improvements on average.
 
 ```console
 $ python3 ./scripts/stat-builtins.py  # update `base_directory` in main to `./final-report-assets/built-ins/`
@@ -35,11 +37,11 @@ peak_mem: 20.37%
 total_mem: 21.81%
 ```
 
-![Time Improvements](./final-report-assets/time.png)
-
-![Peak Memory Improvements](./final-report-assets/peak_mem.png)
-
-![Total Memory Improvements](./final-report-assets/total_mem.png)
+<p float="left">
+  <img src="/final-report-assets/time.png" width="33%" />
+  <img src="/final-report-assets/peak_mem.png" width="33%" /> 
+  <img src="/final-report-assets/total_mem.png" width="33%" />
+</p>
 
 ## The current state
 
