@@ -8,7 +8,7 @@ Organization: GNU Compiler Collection
 
 ## Short description
 
-C++: Implement compiler built-ins for the standard library traits
+**C++: Implement compiler built-ins for the standard library traits**
 
 Many C++ standard library traits are often implemented using template metaprogramming, which can result in worse compilation performance due to expensive instantiations of multiple class templates.  The most likely way to address the costly instantiations is to define compiler built-in traits and get library traits to dispatch to these built-ins.  It is also essential to conduct thorough benchmarking and compare the existing implementations with built-in traits, as there may be some library traits that are already optimal or non-built-in approaches that outperform built-ins.  Thus, the main goal of this project is to optimize the standard library traits by incorporating built-ins and investigating alternative approaches, with the aim of enhancing the compilation performance.
 
@@ -54,7 +54,7 @@ Most patches are still under review.
 
 ## What's left to do
 
-Implement the following remaining built-in traits:
+I will implement the following remaining built-in traits:
 
 * is(_nothrow)_invocable(_r)
 * invoke_result
@@ -139,7 +139,7 @@ https://gcc.gnu.org/pipermail/gcc-patches/2023-October/633775.html
 
 ## Any challenges or important things I learned during the project
 
-
+This project deepened my passion for compilers and performance engineering.  Initially uncertain of my inclinations in these areas, this endeavor provided an ideal platform for exploration.  Working on a project with clear goals that resonated with my interests was profoundly rewarding.  This experience not only clarified my future direction but also enriched me with invaluable knowledge and insights, particularly from the mentorship I received.
 
 ## Acknowledgment
 
