@@ -145,7 +145,7 @@ Firstly, I wish to express my profound gratitude to Patrick Palka, my mentor, fo
 
 I would also like to extend my gratitude to the reviewers of my code, in particular Jonathan Wakely and Jason Merrill, as well as my mentor, for providing constructive criticism, insights, and suggestions.  Their thorough examination and feedback have significantly improved the quality of the final patches.
 
-I am also grateful to the myriad of contributors on the GCC mailing list.  Their prompt assistance, insightful discussions, and shared experiences have enriched this project and contributed significantly to its fruition.
+In addition, I am grateful to the myriad of contributors on the GCC mailing list.  Their prompt assistance, insightful discussions, and shared experiences have enriched this project and contributed significantly to its fruition.
 
 ## Related Links
 
