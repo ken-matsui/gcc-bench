@@ -14,7 +14,7 @@ Many C++ standard library traits are often implemented using template metaprogra
 
 ## What I did so far
 
-I have created a total of 35 patches, out of which 33 are currently waiting for review.  These patches not only include the implementation of built-in traits, but also address the issue of handling built-in trait identifiers more efficiently.  Earlier, built-in traits were handled as registered keywords, but since keywords are limited to 8 bits (i.e., up to 255 keywords), adding too many built-in traits exceeded the limit.  As increasing the limit had a negative impact on the compilation performance, we decided to use the identifier kind to handle built-in traits instead.  With this approach, we can look up built-ins in O(1) time complexity.  Our patches also allow for the acceptance of code that was not previously possible:
+I have created a total of 35 patches, out of which 33 are currently waiting for review.  These patches not only include the implementation of built-in traits, but also address the issue of handling built-in trait identifiers more efficiently.  Earlier, built-in traits were handled as registered keywords, but since number of keywords is limited to 8 bits (i.e., up to 255 keywords), adding built-in traits though our project exceeded the limit.  As increasing the limit had a negative impact on the compilation performance, we decided to use the identifier kind to handle built-in traits instead.  With this approach, we can look up built-ins in O(1) time complexity.  Also, our patches now allow for the acceptance of code that was not previously possible:
 
 ```cpp
 #include <type_traits>
@@ -23,7 +23,7 @@ template<typename T>
 struct __is_pointer : std::bool_constant<__is_pointer(T)> {};
 ```
 
-Before our patches, the above code could not be accepted.  However, our patches can now accept the code like this by recognizing built-in traits only with the preceding token `(` or `<` (only for `__type_pack_element`) to reduce potential breakage of existing codes.
+Before our patches, the above code could not be accepted.  Our patches, however, can now accept the code like this by recognizing built-in traits only with the preceding token `(` or `<` (only for `__type_pack_element`) to reduce potential breakage of existing codes.
 
 I have implemented 15 built-in traits so far, resulting in significant improvements in compilation time, peak memory usage during compilation, and total memory usage during compilation. On average, I have seen a 24.31% improvement in compilation time, a 20.37% improvement in peak memory usage, and a 21.81% improvement in total memory usage.
 
