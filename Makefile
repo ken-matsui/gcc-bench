@@ -166,5 +166,5 @@ gen_report_%: reports/built-ins/%
 
 gen_report_all: $(foreach trait, $(TRAITS), gen_report_$(trait))
 
-gen_charts:
-	python3 ./scripts/gen-charts.py
+gen_charts: scripts/gen-charts.py
+	python3 ./$<
