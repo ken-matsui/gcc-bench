@@ -291,3 +291,71 @@ Difference at 95.0% confidence
 
 ---
 
+## Sun Oct 22 09:16:44 PM PDT 2023
+
+### Time
+
+```console
+x ./reports/built-ins/is_pointer_v/time_no_builtin.txt
++ ./reports/built-ins/is_pointer_v/time_builtin.txt
++----------------------------------------------------------------------+
+|+                      x +   +x ++xx x    + ++   +    x      +       x|
+|                   |___|___________MAA____M________||                 |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     4.5603854     5.1598507     4.7146264      4.743916    0.18434949
++  10     4.2569437     5.0525431     4.8123094     4.7274485    0.21626771
+No difference proven at 95.0% confidence
+```
+
+### Peak Memory Usage
+
+```console
+x ./reports/built-ins/is_pointer_v/peak_mem_no_builtin.txt
++ ./reports/built-ins/is_pointer_v/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+|++                                                                   x|
+|++                                                                  xx|
+|++                                                                  xx|
+|++                                                                  xx|
+|++                                                                 xxx|
+|AM                                                                  AM|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10       1018236       1018744       1018588     1018540.8     161.68886
++  10        995628        995908        995804        995774     91.937177
+Difference at 95.0% confidence
+	-22766.8 +/- 123.577
+	-2.23524% +/- 0.0121327%
+	(Student's t, pooled s = 131.521)
+```
+
+### Total Memory Usage
+
+```console
+x ./reports/built-ins/is_pointer_v/total_mem_no_builtin.txt
++ ./reports/built-ins/is_pointer_v/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1184          1184          1184          1184             0
++  10          1147          1147          1147          1147             0
+Difference at 95.0% confidence
+	-37 +/- 0
+	-3.125% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

@@ -177,3 +177,69 @@ Difference at 95.0% confidence
 
 ---
 
+## Sun Oct 22 09:16:44 PM PDT 2023
+
+### Time
+
+```console
+x ./reports/built-ins/is_volatile_v/time_no_builtin.txt
++ ./reports/built-ins/is_volatile_v/time_builtin.txt
++----------------------------------------------------------------------+
+|x    x   x        +   x x +xx+    +      ++x +   ++x    +            x|
+|      |____________________|A__________A__M______|_|                  |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     3.3293151       4.08098     3.6194359     3.6305969     0.2336407
++  10     3.5307851     3.9366232     3.7919022     3.7554129    0.13002218
+No difference proven at 95.0% confidence
+```
+
+### Peak Memory Usage
+
+```console
+x ./reports/built-ins/is_volatile_v/peak_mem_no_builtin.txt
++ ./reports/built-ins/is_volatile_v/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+| +   +                                                              x |
+| +  ++                                                            x xx|
+|++ +++                                                           xxxxx|
+| |_AM|                                                            |AM||
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10        910648        911016        910900        910874     120.16655
++  10        904776        905268        905100      905044.8     181.44898
+Difference at 95.0% confidence
+	-5829.2 +/- 144.594
+	-0.639957% +/- 0.0158742%
+	(Student's t, pooled s = 153.889)
+```
+
+### Total Memory Usage
+
+```console
+x ./reports/built-ins/is_volatile_v/total_mem_no_builtin.txt
++ ./reports/built-ins/is_volatile_v/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1052          1052          1052          1052             0
++  10          1045          1045          1045          1045             0
+Difference at 95.0% confidence
+	-7 +/- 0
+	-0.665399% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

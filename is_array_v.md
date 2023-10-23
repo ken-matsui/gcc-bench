@@ -177,3 +177,73 @@ Difference at 95.0% confidence
 
 ---
 
+## Sun Oct 22 09:16:44 PM PDT 2023
+
+### Time
+
+```console
+x ./reports/built-ins/is_array_v/time_no_builtin.txt
++ ./reports/built-ins/is_array_v/time_builtin.txt
++----------------------------------------------------------------------+
+|               +                             x                        |
+|+  +  ++       +     +     +              +xxxx  x    x+   x   x     x|
+| |_____________M___A_________________|     |_____M__A________|        |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     4.2625207     4.4915697     4.3167035     4.3418365   0.078836324
++  10     3.8944028     4.3691288     4.0258572     4.0596445     0.1538841
+Difference at 95.0% confidence
+	-0.282192 +/- 0.114876
+	-6.49937% +/- 2.64579%
+	(Student's t, pooled s = 0.122261)
+```
+
+### Peak Memory Usage
+
+```console
+x ./reports/built-ins/is_array_v/peak_mem_no_builtin.txt
++ ./reports/built-ins/is_array_v/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+|   + +                                                             x  |
+|   +++                                                            xxx |
+|+  ++++                                                       x  xxxxx|
+|  |_A_|                                                          |_A_||
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10        892144        892988        892760      892697.6     235.22056
++  10        884788        885528        885276        885240      204.2221
+Difference at 95.0% confidence
+	-7457.6 +/- 206.962
+	-0.8354% +/- 0.0231839%
+	(Student's t, pooled s = 220.267)
+```
+
+### Total Memory Usage
+
+```console
+x ./reports/built-ins/is_array_v/total_mem_no_builtin.txt
++ ./reports/built-ins/is_array_v/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1054          1054          1054          1054             0
++  10          1027          1027          1027          1027             0
+Difference at 95.0% confidence
+	-27 +/- 0
+	-2.56167% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

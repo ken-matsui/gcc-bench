@@ -192,3 +192,81 @@ Difference at 95.0% confidence
 
 ---
 
+## Sun Oct 22 09:16:44 PM PDT 2023
+
+### Time
+
+```console
+x ./reports/built-ins/is_scoped_enum_v/time_no_builtin.txt
++ ./reports/built-ins/is_scoped_enum_v/time_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                     |
+|+    +                                                    x    x    x |
+|+ +  +++   +  +                               x      x    x    xx   xx|
+||____A____|                                           |______A_M____| |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     5.2048712     6.0551091      5.838973     5.7598789    0.27491655
++  10     3.4819245     3.9856531     3.6676574     3.6665642    0.17547562
+Difference at 95.0% confidence
+	-2.09331 +/- 0.216689
+	-36.343% +/- 3.76204%
+	(Student's t, pooled s = 0.23062)
+```
+
+### Peak Memory Usage
+
+```console
+x ./reports/built-ins/is_scoped_enum_v/peak_mem_no_builtin.txt
++ ./reports/built-ins/is_scoped_enum_v/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10       1106984       1107192       1107108     1107099.2     69.864631
++  10        905876        906196        905996      906017.2     125.54663
+Difference at 95.0% confidence
+	-201082 +/- 95.4581
+	-18.163% +/- 0.00862236%
+	(Student's t, pooled s = 101.595)
+```
+
+### Total Memory Usage
+
+```console
+x ./reports/built-ins/is_scoped_enum_v/total_mem_no_builtin.txt
++ ./reports/built-ins/is_scoped_enum_v/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1324          1324          1324          1324             0
++  10          1046          1046          1046          1046             0
+Difference at 95.0% confidence
+	-278 +/- 0
+	-20.997% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

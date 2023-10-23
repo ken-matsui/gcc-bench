@@ -199,3 +199,82 @@ Difference at 95.0% confidence
 
 ---
 
+## Sun Oct 22 09:16:44 PM PDT 2023
+
+### Time
+
+```console
+x ./reports/built-ins/is_member_object_pointer_v/time_no_builtin.txt
++ ./reports/built-ins/is_member_object_pointer_v/time_builtin.txt
++----------------------------------------------------------------------+
+| +                                                                    |
+| ++                                                     x             |
+| +++                                                    xx x          |
+|++++                                                    xx xx      x x|
+| |A|                                                   |___MA___|     |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     33.492517      39.59786     34.801514      35.20297     2.1625487
++  10     7.6042408     9.2267292     8.6135455     8.4551059    0.45185252
+Difference at 95.0% confidence
+	-26.7479 +/- 1.46781
+	-75.9818% +/- 4.16957%
+	(Student's t, pooled s = 1.56218)
+```
+
+### Peak Memory Usage
+
+```console
+x ./reports/built-ins/is_member_object_pointer_v/peak_mem_no_builtin.txt
++ ./reports/built-ins/is_member_object_pointer_v/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10       5512716       5512972       5512868       5512856     82.083968
++  10       1540232       1540476       1540324     1540334.4      82.82136
+Difference at 95.0% confidence
+	-3.97252e+06 +/- 77.4729
+	-72.0592% +/- 0.00140531%
+	(Student's t, pooled s = 82.4535)
+```
+
+### Total Memory Usage
+
+```console
+x ./reports/built-ins/is_member_object_pointer_v/total_mem_no_builtin.txt
++ ./reports/built-ins/is_member_object_pointer_v/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          6742          6742          6742          6742             0
++  10          1713          1713          1713          1713             0
+Difference at 95.0% confidence
+	-5029 +/- 0
+	-74.5921% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

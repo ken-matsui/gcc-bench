@@ -178,3 +178,71 @@ Difference at 95.0% confidence
 
 ---
 
+## Sun Oct 22 09:16:44 PM PDT 2023
+
+### Time
+
+```console
+x ./reports/built-ins/is_unbounded_array_v/time_no_builtin.txt
++ ./reports/built-ins/is_unbounded_array_v/time_builtin.txt
++----------------------------------------------------------------------+
+|                                           + x                        |
+|x                 +  x +      +  xx x+     ++x +     xx +      +     x|
+|                    |_____|____________AA__M_M_________|__|           |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     5.7446241     6.6997584     6.3638928     6.2827713    0.26603871
++  10     5.9903458     6.6227069     6.3431399     6.3041859    0.19581215
+No difference proven at 95.0% confidence
+```
+
+### Peak Memory Usage
+
+```console
+x ./reports/built-ins/is_unbounded_array_v/peak_mem_no_builtin.txt
++ ./reports/built-ins/is_unbounded_array_v/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+|  +                                                                  x|
+| ++                                                                  x|
+| +++                                                                xx|
+|++++                                                               xxx|
+| |A                                                                 |A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10       1155588       1155868       1155816     1155789.2     83.651127
++  10       1142964       1143456       1143308       1143268     140.08252
+Difference at 95.0% confidence
+	-12521.2 +/- 108.401
+	-1.08335% +/- 0.009379%
+	(Student's t, pooled s = 115.37)
+```
+
+### Total Memory Usage
+
+```console
+x ./reports/built-ins/is_unbounded_array_v/total_mem_no_builtin.txt
++ ./reports/built-ins/is_unbounded_array_v/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1383          1383          1383          1383             0
++  10          1350          1350          1350          1350             0
+Difference at 95.0% confidence
+	-33 +/- 0
+	-2.38612% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

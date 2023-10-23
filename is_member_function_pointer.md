@@ -88,3 +88,80 @@ Difference at 95.0% confidence
 
 ---
 
+## Sun Oct 22 09:16:44 PM PDT 2023
+
+### Time
+
+```console
+x ./reports/built-ins/is_member_function_pointer/time_no_builtin.txt
++ ./reports/built-ins/is_member_function_pointer/time_builtin.txt
++----------------------------------------------------------------------+
+|++++                                                           xx  x x|
+|+++++  +                                                     x xx xx x|
+||_A_|                                                          |_AM_| |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     13.288512     14.156486     13.775392     13.732569    0.30261664
++  10     6.3350962     7.1361802     6.5828788     6.5973803    0.23744575
+Difference at 95.0% confidence
+	-7.13519 +/- 0.255561
+	-51.9581% +/- 1.86098%
+	(Student's t, pooled s = 0.27199)
+```
+
+### Peak Memory Usage
+
+```console
+x ./reports/built-ins/is_member_function_pointer/peak_mem_no_builtin.txt
++ ./reports/built-ins/is_member_function_pointer/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10       2531864       2532336       2532184     2532129.6      145.4886
++  10       1386784       1387320       1386956     1386979.2     155.72968
+Difference at 95.0% confidence
+	-1.14515e+06 +/- 141.593
+	-45.2248% +/- 0.00559187%
+	(Student's t, pooled s = 150.696)
+```
+
+### Total Memory Usage
+
+```console
+x ./reports/built-ins/is_member_function_pointer/total_mem_no_builtin.txt
++ ./reports/built-ins/is_member_function_pointer/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          3038          3038          3038          3038             0
++  10          1613          1613          1613          1613             0
+Difference at 95.0% confidence
+	-1425 +/- 0
+	-46.9059% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+

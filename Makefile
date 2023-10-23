@@ -144,7 +144,7 @@ bench_%: %.cc
 bench_all: perf_setup $(foreach trait, $(TRAITS), bench_$(trait))
 
 
-gen_report_%:
+gen_report_%: reports/built-ins/%
 	echo "## `date`\n" >> ./$*.md
 
 	echo '### Time\n' >> ./$*.md
