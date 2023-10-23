@@ -137,3 +137,9 @@ https://gcc.gnu.org/pipermail/gcc-patches/2023-October/633775.html
 
 ## Any challenges or important things I learned during the project
 
+
+## Related Links
+
+* https://summerofcode.withgoogle.com/programs/2023/projects/SuvI1tlp
+* https://github.com/ken-matsui/gsoc23
+* https://github.com/ken-matsui/gcc-gsoc23
