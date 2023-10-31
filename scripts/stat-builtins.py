@@ -1,10 +1,12 @@
 import os
 
+
 def calculate_improvement_percentage(old, new):
     """
     Calculate the improvement percentage.
     """
     return ((old - new) / old) * 100
+
 
 def calculate_average_for_category(directory, category):
     """
@@ -13,18 +15,23 @@ def calculate_average_for_category(directory, category):
     builtin_file_path = os.path.join(directory, f"{category}_builtin.txt")
     no_builtin_file_path = os.path.join(directory, f"{category}_no_builtin.txt")
 
-    with open(builtin_file_path, 'r') as f_builtin, open(no_builtin_file_path, 'r') as f_no_builtin:
+    with open(builtin_file_path, "r") as f_builtin, open(
+        no_builtin_file_path, "r"
+    ) as f_no_builtin:
         builtin_values = list(map(float, f_builtin.readlines()))
         no_builtin_values = list(map(float, f_no_builtin.readlines()))
 
     total_improvement_percentage = 0.0
     for builtin, no_builtin in zip(builtin_values, no_builtin_values):
-        total_improvement_percentage += calculate_improvement_percentage(no_builtin, builtin)
+        total_improvement_percentage += calculate_improvement_percentage(
+            no_builtin, builtin
+        )
 
     return total_improvement_percentage / len(builtin_values)
 
+
 def main():
-    categories = ['time', 'peak_mem', 'total_mem']
+    categories = ["time", "peak_mem", "total_mem"]
     base_directory = "./reports/builtins/"
 
     total_improvements = {category: 0.0 for category in categories}
@@ -34,7 +41,10 @@ def main():
         path = os.path.join(base_directory, directory)
 
         # Check if it's a directory and contains the expected txt files
-        if os.path.isdir(path) and all(os.path.exists(os.path.join(path, f"{category}_builtin.txt")) for category in categories):
+        if os.path.isdir(path) and all(
+            os.path.exists(os.path.join(path, f"{category}_builtin.txt"))
+            for category in categories
+        ):
             num_directories += 1
 
             print(f"Calculating improvement for: {directory}")
@@ -47,6 +57,7 @@ def main():
     print("Overall averages:")
     for category in categories:
         print(f"{category}: {total_improvements[category] / num_directories:.2f}%")
+
 
 if __name__ == "__main__":
     main()
