@@ -29,16 +29,45 @@ I have implemented 15 built-in traits so far, resulting in significant improveme
 
 ## The current state
 
-On average, I have seen a 24.31% improvement in compilation time, a 20.37% improvement in peak memory usage, and a 21.81% improvement in total memory usage.
+The top 3 improvements for each category are as follows:
+
+* Time
+  1. `is_member_object_pointer_v`: 75.89%
+  2. `is_member_pointer_v`: 70.46%
+  3. `is_object_v`: 68.61%
+* Peak Memory
+  1. `is_member_object_pointer_v`: 72.06%
+  2. `is_member_pointer_v`: 65.81%
+  3. `is_member_object_pointer`: 57.52%
+* Total Memory
+  1. `is_member_object_pointer_v`: 74.59%
+  2. `is_member_pointer_v`: 69.18%
+  3. `is_member_object_pointer`: 59.87%
+
+On average, I have seen a 24.31% improvement in compilation time, a 20.37% improvement in peak memory usage, and a 21.81% improvement in total memory usage.  All statistics here can be shown by the following command.
 
 ```console
 $ python3 ./scripts/stat-builtins.py  # update `base_directory` in main to `./final-report-assets/builtins/`
-...
+Best 3 Improvements:
+  time:
+    is_member_object_pointer_v: 75.89%
+    is_member_pointer_v: 70.46%
+    is_object_v: 68.61%
+
+  peak_mem:
+    is_member_object_pointer_v: 72.06%
+    is_member_pointer_v: 65.81%
+    is_member_object_pointer: 57.52%
+
+  total_mem:
+    is_member_object_pointer_v: 74.59%
+    is_member_pointer_v: 69.18%
+    is_member_object_pointer: 59.87%
 
 Overall averages:
-time: 24.31%
-peak_mem: 20.37%
-total_mem: 21.81%
+  time: 24.31%
+  peak_mem: 20.37%
+  total_mem: 21.81%
 ```
 
 <p align="center">
