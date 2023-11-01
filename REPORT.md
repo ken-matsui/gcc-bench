@@ -44,7 +44,7 @@ The top 3 improvements for each category are as follows:
   2. `is_member_pointer_v`: 69.18%
   3. `is_member_object_pointer`: 59.87%
 
-On average, I have seen a 24.31% improvement in compilation time, a 20.37% improvement in peak memory usage, and a 21.81% improvement in total memory usage.  All statistics here can be shown by the following command.
+On average, there are a 24.31% improvement in compilation time, a 20.37% improvement in peak memory usage, and a 21.81% improvement in total memory usage.  All statistics here can be seen by the following command and charts.
 
 ```console
 $ python3 ./scripts/stat-builtins.py  # update `base_directory` in main to `./final-report-assets/builtins/`
