@@ -1,4 +1,5 @@
 import os
+import sys
 
 
 def calculate_improvement_percentage(old, new):
@@ -34,11 +35,12 @@ def main():
     categories = ["time", "peak_mem", "total_mem"]
     base_directory = "./reports/builtins/"
 
+    improvements = {category: {} for category in categories}
     total_improvements = {category: 0.0 for category in categories}
     num_directories = 0
 
-    for directory in os.listdir(base_directory):
-        path = os.path.join(base_directory, directory)
+    for builtin in os.listdir(base_directory):
+        path = os.path.join(base_directory, builtin)
 
         # Check if it's a directory and contains the expected txt files
         if os.path.isdir(path) and all(
@@ -47,16 +49,33 @@ def main():
         ):
             num_directories += 1
 
-            print(f"Calculating improvement for: {directory}")
             for category in categories:
                 avg = calculate_average_for_category(path, category)
-                print(f"{category}: {avg:.2f}%")
+                improvements[category][builtin] = avg
                 total_improvements[category] += avg
-            print()
 
-    print("Overall averages:")
+    print("Best 3 Improvements:")
     for category in categories:
-        print(f"{category}: {total_improvements[category] / num_directories:.2f}%")
+        print(f"  {category}:")
+        for builtin, improvement in sorted(
+            improvements[category].items(), key=lambda x: x[1], reverse=True
+        )[:3]:
+            print(f"    {builtin}: {improvement:.2f}%")
+        print()
+
+    print("Overall Averages:")
+    for category in categories:
+        print(f"  {category}: {total_improvements[category] / num_directories:.2f}%")
+
+    if len(sys.argv) > 1 and sys.argv[1] == "--all":
+        print()
+        print("All Improvements:")
+        for category in categories:
+            print(f"  {category}:")
+            for builtin, improvement in sorted(
+                improvements[category].items(), key=lambda x: x[1], reverse=True
+            ):
+                print(f"    {builtin}: {improvement:.2f}%")
 
 
 if __name__ == "__main__":
