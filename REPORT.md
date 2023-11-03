@@ -31,15 +31,15 @@ I have implemented 15 built-in traits so far, resulting in significant improveme
 
 The top 3 improvements for each category are as follows:
 
-* Time (% faster)
+* Compilation Time (% faster)
   1. `is_member_object_pointer_v`: 75.89%
   2. `is_member_pointer_v`: 70.46%
   3. `is_object_v`: 68.61%
-* Peak Memory (% efficient)
+* Compilation Peak Memory (% efficient)
   1. `is_member_object_pointer_v`: 72.06%
   2. `is_member_pointer_v`: 65.81%
   3. `is_member_object_pointer`: 57.52%
-* Total Memory (% efficient)
+* Compilation Total Memory (% efficient)
   1. `is_member_object_pointer_v`: 74.59%
   2. `is_member_pointer_v`: 69.18%
   3. `is_member_object_pointer`: 59.87%
