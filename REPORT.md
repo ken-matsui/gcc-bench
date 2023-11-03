@@ -168,7 +168,7 @@ https://gcc.gnu.org/pipermail/gcc-patches/2023-October/633775.html
 
 ## Any challenges or important things I learned during the project
 
-This project deepened my passion for compilers and performance engineering.  Initially uncertain of my inclinations in these areas, this endeavor provided an ideal platform for exploration.  Working on a project with clear goals that resonated with my interests was profoundly rewarding.  This experience not only clarified my future direction but also enriched me with invaluable knowledge and insights, particularly from the mentorship I received.
+This project deepened my passion for compilers and performance engineering.  Initially, I was uncertain about my inclinations in these areas, as I had changed my interests dramatically in the past.  However, this project provided an ideal platform for exploration.  Working on the project with clear goals that resonated with my interests was profoundly rewarding.  This experience not only clarified my future direction but also enriched me with invaluable knowledge and insights, particularly from the mentorship I received.
 
 ## Acknowledgment
 
