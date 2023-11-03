@@ -106,9 +106,6 @@ I will implement the following remaining built-in traits:
 * is_unsigned
 * is_signed
 * is_scalar
-
-The following traits need research on if it is possible to implement:
-
 * common_type
 * common_reference
 * is_destructible
