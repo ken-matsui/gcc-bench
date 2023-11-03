@@ -14,7 +14,7 @@ Many C++ standard library traits are often implemented using template metaprogra
 
 ## What I did so far
 
-I have created a total of 35 patches, out of which 33 are currently waiting for review.  These patches not only include the implementation of built-in traits, but also address the issue of handling built-in trait identifiers more efficiently.  Earlier, built-in traits were handled as registered keywords, but since number of keywords is limited to 8 bits (i.e., up to 255 keywords), adding built-in traits though our project exceeded the limit.  As increasing the limit had a negative impact on the compilation performance, we decided to use the identifier kind to handle built-in traits instead.  With this approach, we can look up built-ins in O(1) time complexity.  Also, our patches now allow for the acceptance of code that was not previously possible:
+I have created a total of 35 patches, out of which 33 are in the final stages of review and on track to be merged for the next release of GCC.  These patches not only include the implementation of built-in traits, but also address the issue of handling built-in trait identifiers more efficiently.  Earlier, built-in traits were handled as registered keywords, but since number of keywords is limited to 8 bits (i.e., up to 255 keywords), adding built-in traits though our project exceeded the limit.  As increasing the limit had a negative impact on the compilation performance, we decided to use the identifier kind to handle built-in traits instead.  With this approach, we can look up built-ins in O(1) time complexity.  Also, our patches now allow for the acceptance of code that was not previously possible:
 
 ```cpp
 #include <type_traits>
