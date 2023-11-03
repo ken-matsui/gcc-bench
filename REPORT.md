@@ -23,7 +23,7 @@ template<typename T>
 struct __is_pointer : std::bool_constant<__is_pointer(T)> {};
 ```
 
-Before our patches, the above code could not be accepted.  Our patches, however, can now accept the code like this by recognizing built-in traits only with the preceding token `(` or `<` (only for `__type_pack_element`) to reduce potential breakage of existing codes. For example, older versions of libstdc++ that may have name conflicts with some of the newly added built-in trait names.
+Before our patches, the above code could not be accepted.  Our patches, however, can now accept the code like this by recognizing built-in traits only with the preceding token `(` or `<` (only for `__type_pack_element`) to reduce potential breakage of existing codes.  For example, older versions of libstdc++ that may have name conflicts with some of the newly added built-in trait names.
 
 I have implemented 15 built-in traits so far, resulting in significant improvements in compilation time, peak memory usage during compilation, and total memory usage during compilation.
 
