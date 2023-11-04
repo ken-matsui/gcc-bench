@@ -4,7 +4,7 @@ Student: Ken Matsui
 
 Mentor: Patrick Palka
 
-Organization: GNU Compiler Collection
+Organization: [GNU Compiler Collection](https://gcc.gnu.org)
 
 ## Short description
 
