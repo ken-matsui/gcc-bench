@@ -243,3 +243,74 @@ Difference at 95.0% confidence
 
 ---
 
+## Sat Dec 23 09:15:18 AM PST 2023
+
+### Time
+
+```console
+x ./reports/builtins/is_volatile_v/time_no_builtin.txt
++ ./reports/builtins/is_volatile_v/time_builtin.txt
++----------------------------------------------------------------------+
+|    +                                                                 |
+|++  ++ + +++              +              xx x       x xx      x x  x x|
+||______MA______|                             |_________A_________|    |
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10     3.0499187     3.1243953     3.0862962     3.0874403   0.027531939
++  10     2.9418402      3.009593     2.9595272     2.9618384   0.019462435
+Difference at 95.0% confidence
+	-0.125602 +/- 0.022401
+	-4.06816% +/- 0.725552%
+	(Student's t, pooled s = 0.0238411)
+```
+
+### Peak Memory Usage
+
+```console
+x ./reports/builtins/is_volatile_v/peak_mem_no_builtin.txt
++ ./reports/builtins/is_volatile_v/peak_mem_builtin.txt
++----------------------------------------------------------------------+
+| +                                                                   x|
+|++                                                                 x x|
+|+++                                                                x x|
+|++++                                                             xxxxx|
+||A|                                                               |AM||
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10        915760        916136        916032      916005.6     126.90084
++  10        910332        910568        910424      910424.4     76.232394
+Difference at 95.0% confidence
+	-5581.2 +/- 98.3555
+	-0.609298% +/- 0.0107374%
+	(Student's t, pooled s = 104.679)
+```
+
+### Total Memory Usage
+
+```console
+x ./reports/builtins/is_volatile_v/total_mem_no_builtin.txt
++ ./reports/builtins/is_volatile_v/total_mem_builtin.txt
++----------------------------------------------------------------------+
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|+                                                                    x|
+|A                                                                    A|
++----------------------------------------------------------------------+
+    N           Min           Max        Median           Avg        Stddev
+x  10          1062          1062          1062          1062             0
++  10          1055          1055          1055          1055             0
+Difference at 95.0% confidence
+	-7 +/- 0
+	-0.659134% +/- 0%
+	(Student's t, pooled s = 0)
+```
+
+---
+
