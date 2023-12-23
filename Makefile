@@ -132,7 +132,7 @@ bench_total_mem_%: warmup_total_mem_no_builtin_% bench_total_mem_no_builtin_% wa
 	ministat -w 70 ./reports/builtins/$*/total_mem_no_builtin.txt ./reports/builtins/$*/total_mem_builtin.txt
 
 
-bench_%: %.cc
+bench_%: perf_setup %.cc
 	mkdir -p ./reports/builtins/$*
 	@echo '--- Time: $* ---'
 	@$(MAKE) bench_time_$*
@@ -141,7 +141,7 @@ bench_%: %.cc
 	@echo '--- Total memory: $* ---'
 	@$(MAKE) bench_total_mem_$*
 
-bench_all: perf_setup $(foreach trait, $(TRAITS), bench_$(trait))
+bench_all: $(foreach trait, $(TRAITS), bench_$(trait))
 
 
 gen_report_%: reports/builtins/%
