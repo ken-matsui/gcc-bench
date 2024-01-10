@@ -63,7 +63,7 @@ def main():
     file_map = {}
 
     for filename in os.listdir():
-        if filename.endswith('.md') and filename != "README.md":
+        if filename.endswith('.md') and filename != "README.md" and filename != "REPORT.md":
             trait_name = os.path.splitext(filename)[0]
             file_map[trait_name] = parse_markdown(filename)
 
