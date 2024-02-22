@@ -1,10 +1,6 @@
-# gsoc23
+# gcc-bench
 
-GSoC 2023 @ GCC
-
-This repository contains the benchmarks and related files to the GSoC 2023 project.
-
-https://summerofcode.withgoogle.com/programs/2023/projects/SuvI1tlp
+This repository contains benchmarks for GCC, which is a continuation of [my GSoC'23 project](https://summerofcode.withgoogle.com/programs/2023/projects/SuvI1tlp).
 
 ## Environment
 
