@@ -28,7 +28,7 @@ jobs:
         run: ls -aR ${{ runner.temp }}/gcc/
 
       - name: Upload GCC artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: gcc
           path: ${{ runner.temp }}/gcc/
