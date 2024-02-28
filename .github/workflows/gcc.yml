@@ -7,15 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1440 # 24 hours
     steps:
-      - name: Clone GSoC 23 GCC repo
-        run: git clone --depth 1 https://github.com/ken-matsui/gcc-gsoc23.git
+      - name: Clone the GCC repo
+        run: git clone --depth 1 git://gcc.gnu.org/git/gcc.git
 
       - name: Install GCC dependencies
         run: sudo apt-get install -y build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo
 
       - name: Build GCC
         run: |
-          cd gcc-gsoc23
           ./contrib/download_prerequisites
           mkdir build
           cd build
@@ -23,6 +22,7 @@ jobs:
           ../configure --prefix=${{ runner.temp }}/gcc --enable-languages=c++ --disable-error --disable-bootstrap --disable-multilib --enable-checking=release
           make -j$(nproc)
           sudo make install
+        working-directory: gcc
 
       - name: See installed artifacts
         run: ls -aR ${{ runner.temp }}/gcc/
